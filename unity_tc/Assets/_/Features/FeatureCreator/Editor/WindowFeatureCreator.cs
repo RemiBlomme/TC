@@ -1,5 +1,6 @@
 using CustomWindowCreator.Editor;
 using System.IO;
+using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -20,7 +21,7 @@ namespace FeatureCreator.Editor
         private bool _hasRuntime = true;
 
 
-        [MenuItem("Assets/Create/Feature", priority = -240)]
+        [MenuItem("Assets/Create/Feature _#b", priority = -240)]
         public static void ShowWindow()
         {
             WindowFeatureCreator window = (WindowFeatureCreator)GetWindow(typeof(WindowFeatureCreator));
@@ -49,7 +50,8 @@ namespace FeatureCreator.Editor
                 .Build());
 
             textField.Focus();
-            textField.RegisterCallback<KeyDownEvent>(OnKeyDown);
+            //textField.RegisterCallback<KeyDownEvent>(OnKeyDown);
+            _root.RegisterCallback<KeyDownEvent>(OnKeyDown);
         }
 
         private void OnKeyDown(KeyDownEvent evt)
@@ -100,6 +102,9 @@ namespace FeatureCreator.Editor
 
             Debug.Log($"Assembly Definition Created: <color{_featureName}</color>");
             //EditorUtility.DisplayDialog("Assembly Definition Created", $"{_featureName} created", "OK");
+
+            GUIContent notification = new ("Assemblies Created");
+            SceneView.lastActiveSceneView.ShowNotification(notification);
         }
 
         private string CreateFolder(string name, string path)
@@ -112,7 +117,7 @@ namespace FeatureCreator.Editor
             return folderPath;
         }
 
-        private void CreateAssemblyDefinition(string name, string folderPath, bool isEditorOnly = false)
+        private async void CreateAssemblyDefinition(string name, string folderPath, bool isEditorOnly = false)
         {
             string asmdefPath = $"{folderPath}/{name}.asmdef";
 
@@ -120,6 +125,8 @@ namespace FeatureCreator.Editor
             string json = JsonUtility.ToJson(assemblyDef, true);
 
             File.WriteAllText(asmdefPath, json);
+
+            await Task.Delay(100);
             AssetDatabase.Refresh();
         }
     }
