@@ -9,12 +9,12 @@ namespace Level.Runtime
 
         private void Awake()
         {
-            _levelData.LoadLevel();
+            _levelData?.OpenLevel();
         }
 
         private void OnGUI()
         {
-            if(GUILayout.Button("Unload Level")) _levelData.UnloadLevel();
+            if(GUILayout.Button("Unload Level")) _levelData?.CloseLevel();
         }
     }
 }

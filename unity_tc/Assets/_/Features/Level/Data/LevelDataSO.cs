@@ -1,8 +1,13 @@
+#if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.SceneManagement;
+using UnityEngine.SceneManagement;
+#endif
 using UnityEngine;
 using UnityEngine.AddressableAssets;
-using UnityEngine.SceneManagement;
+
+using LoadSceneMode = UnityEngine.SceneManagement.LoadSceneMode;
+
 
 namespace Level.Data
 {
@@ -12,50 +17,48 @@ namespace Level.Data
         [SerializeField] private AssetReference[] SceneAssetReferences;
 
 
-        /// <summary>Open all referenced scenes at Runtime</summary>
-        public void LoadLevel(bool asSingle = false)
+        /// <summary>Open all referenced scenes</summary>
+        public void OpenLevel(bool asSingle = false)
         {
-            for (int i = 0; i < SceneAssetReferences.Length; i++)
+            if (Application.isPlaying)
             {
-                //if (!IsSceneValide(AssetDatabase.GUIDFromAssetPath(scenePath))) continue;
-
-                SceneAssetReferences[i].LoadSceneAsync(asSingle && i == 0 ? LoadSceneMode.Single : LoadSceneMode.Additive);
+                for (int i = 0; i < SceneAssetReferences.Length; i++)
+                {
+                    SceneAssetReferences[i].LoadSceneAsync(asSingle && i == 0 ? LoadSceneMode.Single : LoadSceneMode.Additive);
+                }
+                return;
             }
-        }
-
-        /// <summary>Open all referenced scenes at Runtime</summary>
-        public void UnloadLevel()
-        {
-            for (int i = SceneAssetReferences.Length - 1; i > -1; i--)
-            {
-                SceneAssetReferences[i].UnLoadScene();
-            }
-        }
-
 
 #if UNITY_EDITOR
-        /// <summary>Open all referenced scenes in Editor</summary>
-        public void OpenEditorLevel(bool asSingle = false)
-        {
             for (int i = 0; i < SceneAssetReferences.Length; i++)
             {
-                //if (!IsSceneValide(AssetDatabase.GUIDFromAssetPath(scenePath))) continue;
-
                 EditorSceneManager.OpenScene(
                         AssetDatabase.GUIDToAssetPath(SceneAssetReferences[i].AssetGUID),
                         asSingle && i == 0 ? OpenSceneMode.Single : OpenSceneMode.Additive);
             }
+#endif
         }
 
-        /// <summary>Open all referenced scenes in Editor</summary>
-        public void CloseEditorLevel()
+
+        /// <summary>Open all referenced scenes</summary>
+        public void CloseLevel()
         {
+            if (Application.isPlaying)
+            {
+                for (int i = SceneAssetReferences.Length - 1; i > -1; i--)
+                {
+                    SceneAssetReferences[i].UnLoadScene();
+                }
+                return;
+            }
+
+#if UNITY_EDITOR
             for (int i = SceneAssetReferences.Length - 1; i > -1; i--)
             {
                 EditorSceneManager.CloseScene(
                     SceneManager.GetSceneByPath(AssetDatabase.GUIDToAssetPath(SceneAssetReferences[i].AssetGUID)), true);
             }
-        }
 #endif
+        }
     }
 }

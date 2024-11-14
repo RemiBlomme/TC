@@ -1,0 +1,11 @@
+{
+    "name": "Misc.Data",
+    "rootNamespace": "Misc.Data",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

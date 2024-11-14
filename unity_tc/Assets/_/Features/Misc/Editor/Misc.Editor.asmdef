@@ -1,8 +1,11 @@
 {
-    "name": "FeatureCreator.Editor",
-    "rootNamespace": "FeatureCreator.Editor",
+    "name": "Misc.Editor",
+    "rootNamespace": "Misc.Editor",
     "references": [
-        "GUID:c6e6821d93716034e910ff20225609a5"
+        "GUID:8d62da4aabd2a19419c7378d23ea5849",
+        "GUID:69448af7b92c7f342b298e06a37122aa",
+        "GUID:5cd3d9d7046202b4a8921e8fd4738204",
+        "GUID:157c3030a43eef1439c6ec2a607a2b80"
     ],
     "includePlatforms": [
         "Editor"

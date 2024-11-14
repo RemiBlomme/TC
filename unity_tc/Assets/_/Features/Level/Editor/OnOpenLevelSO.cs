@@ -6,7 +6,7 @@ using UnityEditor.Callbacks;
 namespace Level.Editor
 {
     [CustomEditor(typeof(LevelDataSO))]
-    public static class OnOpenLevelSO
+    public class OnOpenLevelSO : UnityEditor.Editor
     {
         private static LevelDataSO _lastActiveLevelData;
 
@@ -20,8 +20,8 @@ namespace Level.Editor
             switch (current)
             {
                 case LevelDataSO levelSO:
-                    levelSO.OpenEditorLevel();
-                    _lastActiveLevelData?.CloseEditorLevel();
+                    levelSO.OpenLevel();
+                    _lastActiveLevelData?.CloseLevel();
                     _lastActiveLevelData = levelSO;
                     return true;
 

@@ -1,4 +1,4 @@
-﻿namespace FeatureCreator.Editor
+﻿namespace Misc.Editor
 {
     public class AssemblyDefinitionAsset
     {

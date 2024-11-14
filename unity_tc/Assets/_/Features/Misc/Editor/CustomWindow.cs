@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using ObjectField = UnityEditor.Search.ObjectField;
 
-namespace CustomWindowCreator.Editor
+namespace Misc.Editor
 {
     public abstract class CustomWindow : EditorWindow
     {
