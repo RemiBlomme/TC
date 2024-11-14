@@ -1,16 +1,15 @@
+using Misc.Runtime;
 using System.IO;
 using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
-using Misc.Runtime;
-using Level.Data;
-using UnityEditor.AddressableAssets;
 
 namespace Misc.Editor
 {
     public class WindowFeatureCreator : CustomWindow
     {
+        private static WindowFeatureCreator _window;
         private string _featureName;
 
         private const string Data = "Data";
@@ -25,8 +24,8 @@ namespace Misc.Editor
         [MenuItem("Assets/Create/Feature _#b", priority = -240)]
         public static void ShowWindow()
         {
-            WindowFeatureCreator window = (WindowFeatureCreator)GetWindow(typeof(WindowFeatureCreator));
-            window.titleContent = new GUIContent("Feature Creator");
+            _window = GetWindow<WindowFeatureCreator>("Feature Creator");
+            _window.position = new Rect(Screen.width * .5f, Screen.height * .5f, 300, 200);
         }
 
         protected override void Create()
@@ -38,7 +37,6 @@ namespace Misc.Editor
 
             _root.Add(
                 header = new VisualElementBuilder()
-                .Add(CreateLabel("Feature Creator"))
                 .Add(textField = CreateTextField("Feature name:").AddListener((evt) => _featureName = evt.newValue))
                 .Add(CreateButton("Create new feature").AddListener(CreateFeature))
                 .Build());
@@ -51,14 +49,7 @@ namespace Misc.Editor
                 .Build());
 
             textField.Focus();
-            //textField.RegisterCallback<KeyDownEvent>(OnKeyDown);
             _root.RegisterCallback<KeyDownEvent>(OnKeyDown);
-        }
-
-        private void OnKeyDown(KeyDownEvent evt)
-        {
-            if (evt.keyCode == KeyCode.Return || evt.keyCode == KeyCode.KeypadEnter)
-                CreateFeature();
         }
 
         //private void OnGUI()
@@ -78,6 +69,11 @@ namespace Misc.Editor
         //        CreateFeature();
         //}
 
+        private void OnKeyDown(KeyDownEvent evt)
+        {
+            if (evt.keyCode == KeyCode.Return || evt.keyCode == KeyCode.KeypadEnter)
+                CreateFeature();
+        }
 
         private void CreateFeature()
         {
@@ -102,10 +98,12 @@ namespace Misc.Editor
                     false);
 
             Debug.Log($"Assembly Definition Created: <color=cyan>{_featureName}</color>");
-            //EditorUtility.DisplayDialog("Assembly Definition Created", $"{_featureName} created", "OK");
-
             GUIContent notification = new ("Assembly Created");
             SceneView.lastActiveSceneView.ShowNotification(notification);
+
+            //EditorGUIUtility.PingObject();
+
+            _window.Close();
         }
 
         private string CreateFolder(string name, string path)
@@ -128,80 +126,6 @@ namespace Misc.Editor
             File.WriteAllText(asmdefPath, json);
 
             await Task.Delay(100);
-            AssetDatabase.Refresh();
-        }
-    }
-
-
-
-
-
-    public class WindowLevelCreator : CustomWindow
-    {
-        private string _levelName;
-
-
-        [MenuItem("Assets/Create/Level", priority = -240)]
-        public static void ShowWindow()
-        {
-            WindowLevelCreator window = (WindowLevelCreator)GetWindow(typeof(WindowLevelCreator));
-            window.titleContent = new GUIContent("Level Creator");
-        }
-
-        protected override void Create()
-        {
-            VisualElement header;
-
-            VisualElement textField;
-
-            _root.Add(
-                header = new VisualElementBuilder()
-                .Add(CreateLabel("Level Creator"))
-                .Add(textField = CreateTextField("Level name:").AddListener((evt) => _levelName = evt.newValue))
-                .Add(CreateButton("Create new level").AddListener(CreateLevel))
-                .Build());
-
-            textField.Focus();
-            _root.RegisterCallback<KeyDownEvent>(OnKeyDown);
-        }
-
-        private void OnKeyDown(KeyDownEvent evt)
-        {
-            if (evt.keyCode == KeyCode.Return || evt.keyCode == KeyCode.KeypadEnter)
-                CreateLevel();
-        }
-
-
-        private void CreateLevel()
-        {
-            var mainFolderPath = CreateFolder(_levelName, Paths.LEVEL_FOLDER_PATH);
-            CreateFolder("scenes", mainFolderPath);
-            CreateLevelData(_levelName, mainFolderPath);
-
-            Debug.Log($"New Level Created: <color=cyan>{_levelName}</color>");
-
-            GUIContent notification = new("Level Created");
-            SceneView.lastActiveSceneView.ShowNotification(notification);
-        }
-
-        private string CreateFolder(string name, string path)
-        {
-            string folderPath = $"{path}/{name}";
-
-            if (!Directory.Exists(folderPath))
-                Directory.CreateDirectory(folderPath);
-
-            return folderPath;
-        }
-
-        private void CreateLevelData(string name, string folderPath)
-        {
-            string newPath = $"{folderPath}/{name}.asset";
-
-            AssetDatabase.CreateAsset(
-                ScriptableObject.CreateInstance(nameof(LevelDataSO)),
-                newPath);
-
             AssetDatabase.Refresh();
         }
     }

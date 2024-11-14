@@ -16,9 +16,10 @@ namespace Misc.Editor
         {
             EditorApplication.projectChanged += () => { choices = GetAllLevelDataNames(); };
 
+            style.minWidth = 150;
             choices = GetAllLevelDataNames();
-
             value = _currentField ?? choices[0];
+
             this.RegisterValueChangedCallback((evt) => _currentField = evt.newValue);
         }
 

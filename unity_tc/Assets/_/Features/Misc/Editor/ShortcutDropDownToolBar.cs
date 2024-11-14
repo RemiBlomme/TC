@@ -58,19 +58,25 @@ namespace Misc.Editor
         public const string LEVEL = "Level";
 
         public static readonly string[] ARRAY = new[] { ADDRESSABLE, FEATURE, LEVEL };
+
+        private static event Action<string> Changed;
+
+
+        public static void SubscribeOnChange(Action<string> action) => Changed += action;
+        public static void UnsubscribeOnChange(Action<string> action) => Changed -= action;
+        public static void RaiseOnChange(string value) => Changed?.Invoke(value);
     }
 
 
     [MainToolbarElement(id: "ShortcutDropDownToolBar", ToolbarAlign.Right, order: 0)]
     public class ShortcutDropDownToolBar : DropdownField
     {
-        public static event Action<string> OnValueChange;
-
         [Serialize] private string _currentValue;
 
         public void InitializeElement()
         {
-            label = "Shortcuts";
+            style.minWidth = 150;
+            label = "";
             choices = new(ToolBarShortcuts.ARRAY);
 
             value = _currentValue ?? choices[0];
@@ -80,73 +86,67 @@ namespace Misc.Editor
         private void OnRegisterValueChanged(ChangeEvent<string> evt)
         {
             _currentValue = evt.newValue;
-            OnValueChange?.Invoke(_currentValue);
+            ToolBarShortcuts.RaiseOnChange(_currentValue);
+        }
+    }
+
+    public abstract class ShowButtonOnShortcutDropDownToolBar : Button
+    {
+        [Serialize] private DisplayStyle _currentDisplayStyle;
+        protected string _shortcut;
+
+        public abstract void Initialize();
+        protected void InitializeElement()
+        {
+            Initialize();
+
+            style.display = _currentDisplayStyle;
+            ToolBarShortcuts.SubscribeOnChange(OnShortcutDropDownValueChange);
+        }
+
+        private void OnShortcutDropDownValueChange(string value)
+        {
+            _currentDisplayStyle = value == _shortcut ? DisplayStyle.Flex : DisplayStyle.None;
+            style.display = _currentDisplayStyle;
         }
     }
 
 
     [MainToolbarElement(id: "CreateFeatureButtonToolBar", ToolbarAlign.Right, order: 1)]
-    public class CreateFeatureButtonToolBar : Button
+    public class CreateFeatureButtonToolBar : ShowButtonOnShortcutDropDownToolBar
     {
-        [Serialize] private DisplayStyle _currentDisplayStyle;
-
-        public void InitializeElement()
+        public override void Initialize()
         {
+            _shortcut = ToolBarShortcuts.FEATURE;
+
             text = "Create";
             clicked += () => WindowFeatureCreator.ShowWindow();
-
-            style.display = _currentDisplayStyle;
-            ShortcutDropDownToolBar.OnValueChange += OnShortcutDropDownValueChange;
-        }
-
-        private void OnShortcutDropDownValueChange(string value)
-        {
-            _currentDisplayStyle = value == ToolBarShortcuts.FEATURE ? DisplayStyle.Flex : DisplayStyle.None;
-            style.display = _currentDisplayStyle;
         }
     }
 
 
     [MainToolbarElement(id: "CreateLevelButtonToolBar", ToolbarAlign.Right, order: 1)]
-    public class CreateLevelButtonToolBar : Button
+    public class CreateLevelButtonToolBar : ShowButtonOnShortcutDropDownToolBar
     {
-        [Serialize] private DisplayStyle _currentDisplayStyle;
-
-        public void InitializeElement()
+        public override void Initialize()
         {
+            _shortcut = ToolBarShortcuts.LEVEL;
+
             text = "Create";
             clicked += () => WindowLevelCreator.ShowWindow();
-
-            style.display = _currentDisplayStyle;
-            ShortcutDropDownToolBar.OnValueChange += OnShortcutDropDownValueChange;
-        }
-
-        private void OnShortcutDropDownValueChange(string value)
-        {
-            _currentDisplayStyle = value == ToolBarShortcuts.LEVEL ? DisplayStyle.Flex : DisplayStyle.None;
-            style.display = _currentDisplayStyle;
         }
     }
 
 
     [MainToolbarElement(id: "BuildAddressableButtonToolBar", ToolbarAlign.Right, order: 1)]
-    public class BuildAddressableButtonToolBar : Button
+    public class BuildAddressableButtonToolBar : ShowButtonOnShortcutDropDownToolBar
     {
-        [Serialize] private DisplayStyle _currentDisplayStyle;
-
-        public void InitializeElement()
+        public override void Initialize()
         {
+            _shortcut = ToolBarShortcuts.ADDRESSABLE;
+
             text = "Build";
-            clicked += () => clicked += () => AddressableAssetSettings.BuildPlayerContent();
-
-            style.display = _currentDisplayStyle;
-            ShortcutDropDownToolBar.OnValueChange += OnShortcutDropDownValueChange;
-        }
-
-        private void OnShortcutDropDownValueChange(string value)
-        {
-            _currentDisplayStyle = value == ToolBarShortcuts.ADDRESSABLE ? DisplayStyle.Flex : DisplayStyle.None;
-            style.display = _currentDisplayStyle;
+            clicked += () => AddressableAssetSettings.BuildPlayerContent();
         }
     }
 }
