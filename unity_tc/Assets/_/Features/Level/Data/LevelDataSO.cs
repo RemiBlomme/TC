@@ -1,10 +1,11 @@
 #if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.SceneManagement;
-using UnityEngine.SceneManagement;
 #endif
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.AddressableAssets;
+using System.Linq;
 
 using LoadSceneMode = UnityEngine.SceneManagement.LoadSceneMode;
 
@@ -14,7 +15,15 @@ namespace Level.Data
     [CreateAssetMenu(menuName = "SO/LevelSO")]
     public class LevelDataSO : ScriptableObject
     {
-        [SerializeField] private AssetReference[] SceneAssetReferences;
+        [SerializeField] private AssetReference _lightingSceneAssetReference;
+        [SerializeField] private AssetReference[] _sceneAssetReferences;
+
+
+        public void AddScene(AssetReference assetReference)
+        {
+            _sceneAssetReferences = _sceneAssetReferences.Append(assetReference).ToArray();
+        }
+        public AssetReference[] GetScenes() => _sceneAssetReferences;
 
 
         /// <summary>Open all referenced scenes</summary>
@@ -22,20 +31,27 @@ namespace Level.Data
         {
             if (Application.isPlaying)
             {
-                for (int i = 0; i < SceneAssetReferences.Length; i++)
+                for (int i = 0; i < _sceneAssetReferences.Length; i++)
                 {
-                    SceneAssetReferences[i].LoadSceneAsync(asSingle && i == 0 ? LoadSceneMode.Single : LoadSceneMode.Additive);
+                    _sceneAssetReferences[i].LoadSceneAsync(asSingle && i == 0 ? LoadSceneMode.Single : LoadSceneMode.Additive);
                 }
+
+                _lightingSceneAssetReference.LoadSceneAsync(LoadSceneMode.Additive)
+                    .Completed += (evt) => SceneManager.SetActiveScene(evt.Result.Scene);
+
                 return;
             }
 
 #if UNITY_EDITOR
-            for (int i = 0; i < SceneAssetReferences.Length; i++)
+            for (int i = 0; i < _sceneAssetReferences.Length; i++)
             {
                 EditorSceneManager.OpenScene(
-                        AssetDatabase.GUIDToAssetPath(SceneAssetReferences[i].AssetGUID),
+                        AssetDatabase.GUIDToAssetPath(_sceneAssetReferences[i].AssetGUID),
                         asSingle && i == 0 ? OpenSceneMode.Single : OpenSceneMode.Additive);
             }
+
+            SceneManager.SetActiveScene(EditorSceneManager.OpenScene(
+                AssetDatabase.GUIDToAssetPath(_lightingSceneAssetReference.AssetGUID), OpenSceneMode.Additive));
 #endif
         }
 
@@ -45,19 +61,25 @@ namespace Level.Data
         {
             if (Application.isPlaying)
             {
-                for (int i = SceneAssetReferences.Length - 1; i > -1; i--)
+                for (int i = _sceneAssetReferences.Length - 1; i > -1; i--)
                 {
-                    SceneAssetReferences[i].UnLoadScene();
+                    _sceneAssetReferences[i].UnLoadScene();
                 }
+
+                _lightingSceneAssetReference.UnLoadScene();
+
                 return;
             }
 
 #if UNITY_EDITOR
-            for (int i = SceneAssetReferences.Length - 1; i > -1; i--)
+            for (int i = _sceneAssetReferences.Length - 1; i > -1; i--)
             {
                 EditorSceneManager.CloseScene(
-                    SceneManager.GetSceneByPath(AssetDatabase.GUIDToAssetPath(SceneAssetReferences[i].AssetGUID)), true);
+                    SceneManager.GetSceneByPath(AssetDatabase.GUIDToAssetPath(_sceneAssetReferences[i].AssetGUID)), true);
             }
+
+            EditorSceneManager.CloseScene(
+                SceneManager.GetSceneByPath(AssetDatabase.GUIDToAssetPath(_lightingSceneAssetReference.AssetGUID)), true);
 #endif
         }
     }

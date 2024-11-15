@@ -1,5 +1,4 @@
 using System;
-using UnityEditor;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -7,78 +6,86 @@ using ObjectField = UnityEditor.Search.ObjectField;
 
 namespace Misc.Editor
 {
-    public abstract class CustomWindow : EditorWindow
+    /// <summary>Using UIToolkit</summary>
+    public class CustomUI
     {
         [SerializeField] protected StyleSheet _styleSheet;
         protected VisualElement _root;
 
 
-        private void CreateGUI()
-        {
-            _root = rootVisualElement;
-            if (_styleSheet) _root.styleSheets.Add(_styleSheet);
-            Create();
-        }
+        //private void CreateGUI()
+        //{
+        //    _root = new VisualElement();
+        //    if (_styleSheet) _root.styleSheets.Add(_styleSheet);
+        //    Create();
+        //}
 
-        protected abstract void Create();
+        //protected abstract void Create();
 
         #region Creators
-        public IMGUIContainer CopyComponentDisplay(UnityEngine.Object obj)
+        public static IMGUIContainer CopyComponentDisplay(UnityEngine.Object obj)
         {
             UnityEditor.Editor editor = UnityEditor.Editor.CreateEditor(obj);
             return new IMGUIContainer(() => editor.OnInspectorGUI());
         }
 
-        public T Create<T>(string style = "") where T : VisualElement, new()
+        public static T Create<T>(string style = "") where T : VisualElement, new()
         {
             var current = new T();
             if (style != "") current.AddToClassList(style);
             return current;
         }
 
-        public VisualElement CreateVisualElement(string text = "", string style = "")
+        public static VisualElement CreateVisualElement(string text = "", string style = "")
         {
             var current = new VisualElement() { name = text };
             current.AddToClassList(style);
             return current;
         }
 
-        public Label CreateLabel(string text = "", string style = "")
+        public static Label CreateLabel(string text = "", string style = "")
         {
             var current = new Label(text);
             current.AddToClassList(style);
             return current;
         }
 
-        public Button CreateButton(string text = "", string style = "")
+        public static Button CreateButton(string text = "", string style = "")
         {
             var current = new Button() { text = text };
             current.AddToClassList(style);
             return current;
         }
 
-        public Toggle CreateToggle(bool link, string text = "", string style = "")
+        public static Toggle CreateToggle(bool link, string text = "", string style = "")
         {
             var current = new Toggle(text) { value = link };
             current.AddToClassList(style);
             return current;
         }
 
-        public TextField CreateTextField(string text = "", string style = "")
+        public static Toggle CreateToggle(string text = "", string style = "")
+        {
+            var current = new Toggle(text);
+            current.AddToClassList(style);
+            return current;
+        }
+
+        public static TextField CreateTextField(string text = "", string style = "")
         {
             var current = new TextField(text);
             current.AddToClassList(style);
             return current;
         }
 
-        public ColorField CreateColorField(string text = "", string style = "")
+        public static ColorField CreateColorField(string text = "", string style = "")
         {
             var current = new ColorField(text);
             current.AddToClassList(style);
             return current;
         }
 
-        public ObjectField CreateObjectField(Type type, string text = "", string style = "")
+        public static ObjectField CreateObjectField(Type type, string text = "", string style = "")
         {
             var current = new ObjectField(text) { objectType = type };
             current.AddToClassList(style);
@@ -90,6 +97,11 @@ namespace Misc.Editor
     public class VisualElementBuilder
     {
         private VisualElement result = new();
+        public VisualElementBuilder(string text = "", string style = "") 
+        {
+            result = CustomUI.CreateVisualElement(text, style);
+        }
+
 
         public VisualElementBuilder Add<T>(T e) where T : VisualElement, new()
         {

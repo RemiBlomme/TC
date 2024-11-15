@@ -7,7 +7,7 @@ using UnityEngine.UIElements;
 
 namespace Misc.Editor
 {
-    public class WindowFeatureCreator : CustomWindow
+    public class WindowFeatureCreator : EditorWindow
     {
         private static WindowFeatureCreator _window;
         private string _featureName;
@@ -28,28 +28,28 @@ namespace Misc.Editor
             _window.position = new Rect(Screen.width * .5f, Screen.height * .5f, 300, 200);
         }
 
-        protected override void Create()
+        private void CreateGUI()
         {
             VisualElement header;
             VisualElement body;
 
             VisualElement textField;
 
-            _root.Add(
+            rootVisualElement.Add(
                 header = new VisualElementBuilder()
-                .Add(textField = CreateTextField("Feature name:").AddListener((evt) => _featureName = evt.newValue))
-                .Add(CreateButton("Create new feature").AddListener(CreateFeature))
+                .Add(textField = CustomUI.CreateTextField("Feature name:").AddListener((evt) => _featureName = evt.newValue))
+                .Add(CustomUI.CreateButton("Create new feature").AddListener(CreateFeature))
                 .Build());
 
-            _root.Add(
+            rootVisualElement.Add(
                 body = new VisualElementBuilder()
-                .Add(CreateToggle(_hasData, "Data folder").AddListener((evt) => _hasData = evt.newValue))
-                .Add(CreateToggle(_hasEditor, "Editor folder").AddListener((evt) => _hasEditor = evt.newValue))
-                .Add(CreateToggle(_hasRuntime, "Runtime folder").AddListener((evt) => _hasRuntime = evt.newValue))
+                .Add(CustomUI.CreateToggle(_hasData, "Data folder").AddListener((evt) => _hasData = evt.newValue))
+                .Add(CustomUI.CreateToggle(_hasEditor, "Editor folder").AddListener((evt) => _hasEditor = evt.newValue))
+                .Add(CustomUI.CreateToggle(_hasRuntime, "Runtime folder").AddListener((evt) => _hasRuntime = evt.newValue))
                 .Build());
 
             textField.Focus();
-            _root.RegisterCallback<KeyDownEvent>(OnKeyDown);
+            rootVisualElement.RegisterCallback<KeyDownEvent>(OnKeyDown);
         }
 
         //private void OnGUI()

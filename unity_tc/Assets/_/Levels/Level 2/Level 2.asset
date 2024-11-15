@@ -12,12 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95029a6cc73856145ab599e80852a0e1, type: 3}
   m_Name: Level 2
   m_EditorClassIdentifier: 
-  SceneAssetReferences:
-  - m_AssetGUID: 39864b2e97644cd499fefb76a8f0a49a
+  _lightingSceneAssetReference:
+    m_AssetGUID: 17a7fb3b51643ef4a9e4dea87af41164
     m_SubObjectName: 
+    m_SubObjectGUID: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
+  _sceneAssetReferences:
   - m_AssetGUID: ca481fe602b8f6146a5c3167705cac8f
     m_SubObjectName: 
+    m_SubObjectGUID: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0

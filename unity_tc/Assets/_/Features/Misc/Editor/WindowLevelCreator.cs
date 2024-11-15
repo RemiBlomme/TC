@@ -7,7 +7,7 @@ using UnityEngine.UIElements;
 
 namespace Misc.Editor
 {
-    public class WindowLevelCreator : CustomWindow
+    public class WindowLevelCreator : EditorWindow
     {
         private static WindowLevelCreator _window;
         private string _levelName;
@@ -20,20 +20,19 @@ namespace Misc.Editor
             _window.position = new Rect(Screen.width * .5f, Screen.height * .5f, 300, 200);
         }
 
-        protected override void Create()
+        private void CreateGUI()
         {
             VisualElement header;
-
             VisualElement textField;
 
-            _root.Add(
+            rootVisualElement.Add(
                 header = new VisualElementBuilder()
-                .Add(textField = CreateTextField("Level name:").AddListener((evt) => _levelName = evt.newValue))
-                .Add(CreateButton("Create new level").AddListener(CreateLevel))
+                .Add(textField = CustomUI.CreateTextField("Level name:").AddListener((evt) => _levelName = evt.newValue))
+                .Add(CustomUI.CreateButton("Create new level").AddListener(CreateLevel))
                 .Build());
 
             textField.Focus();
-            _root.RegisterCallback<KeyDownEvent>(OnKeyDown);
+            rootVisualElement.RegisterCallback<KeyDownEvent>(OnKeyDown);
         }
 
         private void OnKeyDown(KeyDownEvent evt)

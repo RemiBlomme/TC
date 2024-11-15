@@ -20,8 +20,18 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 17a7fb3b51643ef4a9e4dea87af41164
+    m_Address: Assets/_/Levels/Level 1/Scenes/Lighting Level 2.unity
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 39864b2e97644cd499fefb76a8f0a49a
     m_Address: Assets/_/Levels/Level 1/Scenes/SampleScene 1.unity
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4929819e046660548b5b004195622ca3
+    m_Address: Assets/_/Levels/Level 1/Scenes/Lighting Level 1.unity
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
