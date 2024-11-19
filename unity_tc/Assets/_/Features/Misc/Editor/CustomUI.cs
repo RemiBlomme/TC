@@ -2,106 +2,106 @@ using System;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
+
 using ObjectField = UnityEditor.Search.ObjectField;
+
 
 namespace Misc.Editor
 {
-    /// <summary>Using UIToolkit</summary>
-    public class CustomUI
+    /// <summary>Is using UIToolkit</summary>
+    public static class CustomUI
     {
-        [SerializeField] protected StyleSheet _styleSheet;
-        protected VisualElement _root;
-
-
-        //private void CreateGUI()
-        //{
-        //    _root = new VisualElement();
-        //    if (_styleSheet) _root.styleSheets.Add(_styleSheet);
-        //    Create();
-        //}
-
-        //protected abstract void Create();
-
         #region Creators
+        [ObsoleteAttribute("Use VisualElement.AddDefaultInspector() extention instead.")]
         public static IMGUIContainer CopyComponentDisplay(UnityEngine.Object obj)
         {
             UnityEditor.Editor editor = UnityEditor.Editor.CreateEditor(obj);
             return new IMGUIContainer(() => editor.OnInspectorGUI());
         }
 
-        public static T Create<T>(string style = "") where T : VisualElement, new()
+        public static T Create<T>(string name = "") where T : VisualElement, new()
         {
-            var current = new T();
-            if (style != "") current.AddToClassList(style);
-            return current;
+            return new T() { name = name };
         }
 
-        public static VisualElement CreateVisualElement(string text = "", string style = "")
+        public static VisualElement CreateSpace(string name = "", float minWidth = 0, float minHeight = 10)
         {
-            var current = new VisualElement() { name = text };
-            current.AddToClassList(style);
-            return current;
+            return CreateVisualElement(name, minWidth, minHeight);
         }
 
-        public static Label CreateLabel(string text = "", string style = "")
+        public static VisualElement CreateVisualElement(string name = "", float minWidth = 0, float minHeight = 0)
         {
-            var current = new Label(text);
-            current.AddToClassList(style);
-            return current;
+            return new VisualElement() { name = name, style = { minWidth = minWidth, minHeight = minHeight } };
         }
 
-        public static Button CreateButton(string text = "", string style = "")
+        public static Label CreateLabel(string text = "")
         {
-            var current = new Button() { text = text };
-            current.AddToClassList(style);
-            return current;
+            return new Label() { text = text };
         }
 
-        public static Toggle CreateToggle(bool link, string text = "", string style = "")
+        public static Button CreateButton(string text = "")
         {
-            var current = new Toggle(text) { value = link };
-            current.AddToClassList(style);
-            return current;
+            return new Button() { text = text };
         }
 
-        public static Toggle CreateToggle(string text = "", string style = "")
+        public static Toggle CreateToggle(string text = "", bool initialValue = false)
         {
-            var current = new Toggle(text);
-            current.AddToClassList(style);
-            return current;
+            return new Toggle(text) { value = initialValue };
         }
 
-        public static TextField CreateTextField(string text = "", string style = "")
+        public static TextField CreateTextField(string text = "")
         {
-            var current = new TextField(text);
-            current.AddToClassList(style);
-            return current;
+            return new TextField(text);
         }
 
-        public static ColorField CreateColorField(string text = "", string style = "")
+        public static ColorField CreateColorField(string text = "")
         {
-            var current = new ColorField(text);
-            current.AddToClassList(style);
-            return current;
+            return new ColorField(text);
         }
 
-        public static ObjectField CreateObjectField(Type type, string text = "", string style = "")
+        public static ObjectField CreateObjectField(Type type, string text = "")
         {
-            var current = new ObjectField(text) { objectType = type };
-            current.AddToClassList(style);
-            return current;
+            return new ObjectField(text) { objectType = type };
         }
         #endregion
+
+        //#region Copy style
+        //private static void ApplyStyle(VisualElement visualElement, IStyle newStyle)
+        //{
+        //    IStyle style = visualElement.style;
+
+        //    style.alignContent = newStyle.alignContent;
+        //    style.alignItems = newStyle.alignItems;
+        //    style.alignSelf = newStyle.alignSelf;
+        //    style.backgroundColor = newStyle.backgroundColor;
+        //    style.backgroundImage = newStyle.backgroundImage;
+        //    style.backgroundPositionX = newStyle.backgroundPositionX;
+        //    style.backgroundPositionY = newStyle.backgroundPositionY;
+        //    style.backgroundRepeat = newStyle.backgroundRepeat;
+        //    style.backgroundSize = newStyle.backgroundSize;
+        //    style.borderBottomColor = newStyle.borderBottomColor;
+        //    style.borderBottomLeftRadius = newStyle.borderBottomLeftRadius;
+        //    style.borderBottomRightRadius = newStyle.borderBottomRightRadius;
+        //    style.borderBottomWidth = newStyle.borderBottomWidth;
+        //    style.borderLeftColor = newStyle.borderLeftColor;
+        //    style.borderLeftWidth = newStyle.borderLeftWidth;
+        //    style.borderRightColor = newStyle.borderRightColor;
+        //    style.borderRightWidth = newStyle.borderRightWidth;
+        //    style.borderTopColor = newStyle.borderTopColor;
+        //    style.borderTopLeftRadius = newStyle.borderTopLeftRadius;
+        //}
+        //#endregion
     }
 
     public class VisualElementBuilder
     {
         private VisualElement result = new();
-        public VisualElementBuilder(string text = "", string style = "") 
-        {
-            result = CustomUI.CreateVisualElement(text, style);
-        }
 
+
+        public VisualElementBuilder(string name = "")
+        {
+            result = CustomUI.CreateVisualElement(name);
+        }
 
         public VisualElementBuilder Add<T>(T e) where T : VisualElement, new()
         {
@@ -116,13 +116,18 @@ namespace Misc.Editor
         }
     }
 
-    #region Extention Method
 
-    public static class CustomWindowExtensions
+    public static class UIElementsExtensions
     {
+        public static VisualElement AddDefaultInspector(this VisualElement visualElement, UnityEditor.Editor editor)
+        {
+            InspectorElement.FillDefaultInspector(visualElement, editor.serializedObject, editor);
+            return visualElement;
+        }
+
         public static Button AddListener(this Button button, EventCallback<ClickEvent, UnityEngine.Object> action, UnityEngine.Object obj)
         {
-            button.RegisterCallback<ClickEvent, UnityEngine.Object>(action, obj);
+            button.RegisterCallback(action, obj);
             return button;
         }
 
@@ -130,11 +135,6 @@ namespace Misc.Editor
         {
             button.clicked += action;
             return button;
-        }
-
-        private static void Button_clicked()
-        {
-            throw new NotImplementedException();
         }
 
         public static Toggle AddListener(this Toggle toggle, EventCallback<ChangeEvent<bool>> action)
@@ -161,6 +161,4 @@ namespace Misc.Editor
             return objectField;
         }
     }
-
-    #endregion
 }

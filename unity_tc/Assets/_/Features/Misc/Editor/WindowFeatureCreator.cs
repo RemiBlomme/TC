@@ -43,9 +43,9 @@ namespace Misc.Editor
 
             rootVisualElement.Add(
                 body = new VisualElementBuilder()
-                .Add(CustomUI.CreateToggle(_hasData, "Data folder").AddListener((evt) => _hasData = evt.newValue))
-                .Add(CustomUI.CreateToggle(_hasEditor, "Editor folder").AddListener((evt) => _hasEditor = evt.newValue))
-                .Add(CustomUI.CreateToggle(_hasRuntime, "Runtime folder").AddListener((evt) => _hasRuntime = evt.newValue))
+                .Add(CustomUI.CreateToggle("Data folder", _hasData).AddListener((evt) => _hasData = evt.newValue))
+                .Add(CustomUI.CreateToggle("Editor folder", _hasEditor).AddListener((evt) => _hasEditor = evt.newValue))
+                .Add(CustomUI.CreateToggle("Runtime folder", _hasRuntime).AddListener((evt) => _hasRuntime = evt.newValue))
                 .Build());
 
             textField.Focus();

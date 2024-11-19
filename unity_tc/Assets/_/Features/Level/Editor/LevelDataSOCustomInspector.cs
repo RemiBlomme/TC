@@ -1,8 +1,9 @@
-using Level.Data;
-using Misc.Editor;
-using UnityEditor;
-using UnityEditor.UIElements;
 using UnityEngine.UIElements;
+using UnityEditor;
+using Misc.Editor;
+using Level.Data;
+
+using static Misc.Editor.CustomUI;
 
 
 namespace Level.Editor
@@ -12,25 +13,34 @@ namespace Level.Editor
     {
         public override VisualElement CreateInspectorGUI()
         {
-            Button button1;
-            Button button2;
+            VisualElement root;
+            VisualElement header;
+            Button editButton;
 
-            var topButtons = new VisualElementBuilder()
-                .Add(button1 = CustomUI.CreateButton("Add scene").AddListener(() => WindowSceneCreator.ShowWindow(target as LevelDataSO)))
-                .Add(button2 = CustomUI.CreateButton("Remove scene").AddListener(() => WindowSceneRemove.ShowWindow(target as LevelDataSO)))
-                .Build();
-            topButtons.style.flexDirection = FlexDirection.Row;
-            topButtons.style.justifyContent = Justify.Center;
-            button1.style.width = Length.Percent(50);
-            button2.style.width = Length.Percent(50);
+            root = new VisualElementBuilder()
+                .Add(header = new VisualElementBuilder()
+                    .Add(editButton = CreateButton("Edit").AddListener(() => WindowSceneManager.ShowWindow(target as LevelDataSO)))
+                    .Build())
+                .Add(CreateSpace(minHeight: 10))
+                .Build()
+                .AddDefaultInspector(this);
 
-            var root = new VisualElementBuilder()
-                .Add(topButtons)
-                .Build();
-
-            InspectorElement.FillDefaultInspector(root, serializedObject, this);
+            ApplyHeaderStyle(header.style);
+            ApplyButtonStyle(editButton.style);
 
             return root;
+        }
+
+        private void ApplyButtonStyle(IStyle style)
+        {
+            style.width = Length.Percent(100);
+            style.height = 30;
+        }
+
+        private void ApplyHeaderStyle(IStyle style)
+        {
+            style.flexDirection = FlexDirection.Row;
+            style.justifyContent = Justify.Center;
         }
     }
 }
