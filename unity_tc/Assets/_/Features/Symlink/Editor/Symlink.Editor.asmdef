@@ -1,0 +1,19 @@
+{
+    "name": "Symlink.Editor",
+    "rootNamespace": "Symlink.Editor",
+    "references": [
+        "GUID:5cd3d9d7046202b4a8921e8fd4738204",
+        "GUID:7ba8fe7feadb8a24aa9c6c83f434eb4d"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -14,13 +14,19 @@ namespace Misc.Editor
 
         public void InitializeElement()
         {
-            EditorApplication.projectChanged += () => { choices = GetAllLevelDataNames(); };
-
             style.minWidth = 150;
-            choices = GetAllLevelDataNames();
-            value = _currentField ?? choices[0];
+            EditorApplication.projectChanged += SetChoices;
+            SetChoices();
 
             this.RegisterValueChangedCallback((evt) => _currentField = evt.newValue);
+        }
+
+
+        private void SetChoices()
+        {
+            choices = GetAllLevelDataNames();
+            if (!choices.Contains(_currentField)) _currentField = null;
+            value = _currentField ?? choices[0];
         }
 
         private List<string> GetAllLevelDataNames()

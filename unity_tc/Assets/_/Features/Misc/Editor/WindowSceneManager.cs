@@ -1,5 +1,4 @@
 ﻿using Level.Data;
-using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.AddressableAssets;
@@ -22,16 +21,18 @@ namespace Misc.Editor
         private string _sceneName;
 
         private VisualElement _removeSceneTab;
-        private List<AssetReference> _scenesToRemoves = new();
+        private AssetReference[] _scenesAssetReferences;
+        private Toggle[] _toggles;
 
 
         public static void ShowWindow(LevelDataSO levelData)
         {
             _window = GetWindow<WindowSceneManager>("Scene Creator");
             _window._levelData = levelData;
+            _window.OnCreateGUI();
         }
 
-        private void CreateGUI()
+        private void OnCreateGUI()
         {
             DrawHeader();
             DrawAddSceneTab();
@@ -123,7 +124,7 @@ namespace Misc.Editor
 
             AssetDatabase.Refresh();
 
-            _window.Close();
+            Close();
         }
         #endregion
 
@@ -131,22 +132,53 @@ namespace Misc.Editor
         #region Remove Scene
         private void DrawRemoveSceneTab()
         {
-            var scenes = _levelData ? _levelData.GetScenes() : new AssetReference[0];
-            for (int i = 0; i < scenes.Length; i++)
-            {
-                AddElement(_removeSceneTab, scenes[i]);
-            }
+            _scenesAssetReferences = _levelData ? _levelData.GetScenes() : new AssetReference[0];
+            _toggles = new Toggle[_scenesAssetReferences.Length];
 
-            rootVisualElement.Add(_removeSceneTab = new VisualElementBuilder()
-                .Add(CreateButton("Remove selected").AddListener(OnRemoveSelected))
+            _removeSceneTab = new VisualElement();
+            ScrollView scrollView = new ScrollView();
+
+            for (int i = 0; i < _scenesAssetReferences.Length; i++)
+            {
+                AddElement(scrollView, _scenesAssetReferences[i], out Toggle toggle);
+                _toggles[i] = toggle;
+            }
+            _removeSceneTab.Add(scrollView);
+
+            _removeSceneTab.Add(new VisualElementBuilder()
+                .Add(CreateButton("Remove selected", OnRemoveSelected))
                 .Build());
+
+            rootVisualElement.Add(_removeSceneTab);
         }
 
-        private void OnRemoveSelected() => throw new NotImplementedException();
-        private void AddElement(VisualElement parent, AssetReference sceneAsset)
+        private void OnRemoveSelected()
+        {
+            ConfirmationPopup.ShowConfirmPopup().Confirmed += OnDeletionConfirmed;
+        }
+
+        private void OnDeletionConfirmed(bool isConfirmed)
+        {
+            if (!isConfirmed) return;
+
+            for (int i = 0; i < _toggles.Length; i++)
+            {
+                if (!_toggles[i].value) continue;
+
+                AddressableAssetSettingsDefaultObject.Settings.RemoveAssetEntry(_scenesAssetReferences[i].AssetGUID);
+                string path = AssetDatabase.GUIDToAssetPath(_scenesAssetReferences[i].AssetGUID);
+
+                AssetDatabase.DeleteAsset(path);
+                _levelData.RemoveScene(_scenesAssetReferences[i]);
+            }
+
+            Close();
+        }
+
+        private void AddElement(VisualElement parent, AssetReference sceneAsset, out Toggle toggle)
         {
             VisualElement newBody = new VisualElementBuilder()
-                .Add(CreateToggle().AddListener(e => OnToggle(sceneAsset, e.newValue)))
+                .Add(toggle = CreateToggle().AddListener(e => OnToggle(e.newValue)))
                 .Add(CreateButton(sceneAsset.editorAsset.name))
                 .Build();
 
@@ -155,10 +187,9 @@ namespace Misc.Editor
             parent.Add(newBody);
         }
 
-        private void OnToggle(AssetReference sceneAsset, bool toggled)
+        private void OnToggle(bool toggled)
         {
-            if (toggled) _scenesToRemoves.Add(sceneAsset);
-            else _scenesToRemoves.Remove(sceneAsset);
+
         }
         #endregion
     }

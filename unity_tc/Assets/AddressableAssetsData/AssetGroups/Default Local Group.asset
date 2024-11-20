@@ -14,62 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_GroupName: Default Local Group
   m_GUID: 6ab97f50826b7f64998f5f12242947d3
-  m_SerializeEntries:
-  - m_GUID: 16acd79db425a5f4e9257450dd2147c2
-    m_Address: Assets/_/Levels/Level 1/Scenes/LevelOneManagers.unity
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 17a7fb3b51643ef4a9e4dea87af41164
-    m_Address: Assets/_/Levels/Level 1/Scenes/Lighting Level 2.unity
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 39864b2e97644cd499fefb76a8f0a49a
-    m_Address: Assets/_/Levels/Level 1/Scenes/SampleScene 1.unity
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 4929819e046660548b5b004195622ca3
-    m_Address: Assets/_/Levels/Level 1/Scenes/Lighting Level 1.unity
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 52b670d15dbc13c4b8a4c6dda2ecc29f
-    m_Address: Assets/_/Levels/Level 2
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 7a99eb3b71e5e744d84c38c6b0a85358
-    m_Address: Assets/_/Levels/Level 1
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: bd36d4a0d55e8ac4f8cb90b02799aaec
-    m_Address: Assets/_/Levels/Level 1/Level 1.asset
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: ca481fe602b8f6146a5c3167705cac8f
-    m_Address: Assets/_/Levels/Level 2/Scenes/SampleScene.unity
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: f3a6d7f1e6a1b0d45a9ce73100604f11
-    m_Address: Assets/_/Levels/Level 2/Level 2.asset
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: fb86624480e372c41a651b3cd083f287
-    m_Address: Assets/_/Levels/Level 1/Scenes
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: fe99a3f9fcd462d4f8926a0eaba32991
-    m_Address: Assets/_/Levels/Level 2/Scenes
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
+  m_SerializeEntries: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 59af9f65878c1ef4b8ffc1c9809436f5, type: 2}
   m_SchemaSet:

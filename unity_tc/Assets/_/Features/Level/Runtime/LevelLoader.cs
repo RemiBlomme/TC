@@ -1,20 +1,34 @@
 using Level.Data;
+using System;
 using UnityEngine;
 
 namespace Level.Runtime
 {
     public class LevelLoader : MonoBehaviour
     {
-        [SerializeField] private LevelDataSO _levelData;
+        public event Action<LevelDataSO> LevelLoaded;
 
-        private void Awake()
+        [SerializeField] private LevelDataSO _levelToLoad;
+        private LevelDataSO _currentLevelData;
+
+
+        private void Start()
         {
-            _levelData?.OpenLevel();
+            LoadLevel(_levelToLoad);
         }
 
         private void OnGUI()
         {
-            if(GUILayout.Button("Unload Level")) _levelData?.CloseLevel();
+            if(GUILayout.Button("Unload Level")) _currentLevelData?.CloseLevel();
+        }
+
+        public void LoadLevel(LevelDataSO newLevelData)
+        {
+            _currentLevelData?.CloseLevel();
+            newLevelData?.OpenLevel();
+            _currentLevelData = newLevelData;
+
+            LevelLoaded?.Invoke(_currentLevelData);
         }
     }
 }

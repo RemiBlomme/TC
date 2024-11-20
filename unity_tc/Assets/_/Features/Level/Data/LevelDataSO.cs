@@ -23,6 +23,19 @@ namespace Level.Data
         {
             _sceneAssetReferences = _sceneAssetReferences.Append(assetReference).ToArray();
         }
+        public void RemoveScene(AssetReference assetReference)
+        {
+            AssetReference[] newSceneAssetReference = new AssetReference[_sceneAssetReferences.Length - 1];
+            int newIndex = 0;
+
+            foreach (var item in _sceneAssetReferences)
+            {
+                if (item == assetReference) continue;
+                newSceneAssetReference[newIndex++] = item;
+            }
+
+            _sceneAssetReferences = newSceneAssetReference;
+        }
         public AssetReference[] GetScenes() => _sceneAssetReferences;
 
 

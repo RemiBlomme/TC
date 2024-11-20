@@ -1,0 +1,18 @@
+{
+    "name": "GameState.Runtime",
+    "rootNamespace": "GameState.Runtime",
+    "references": [
+        "GUID:157c3030a43eef1439c6ec2a607a2b80",
+        "GUID:6eb526acac53c8d44bd32863a3ca19ee",
+        "GUID:bed044abed94ba24e99e357597663950"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

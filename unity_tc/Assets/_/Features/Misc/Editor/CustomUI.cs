@@ -39,9 +39,9 @@ namespace Misc.Editor
             return new Label() { text = text };
         }
 
-        public static Button CreateButton(string text = "")
+        public static Button CreateButton(string text = "", Action action = null)
         {
-            return new Button() { text = text };
+            return new Button(action) { text = text };
         }
 
         public static Toggle CreateToggle(string text = "", bool initialValue = false)
