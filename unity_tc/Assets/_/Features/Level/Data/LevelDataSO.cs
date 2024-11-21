@@ -12,7 +12,7 @@ using LoadSceneMode = UnityEngine.SceneManagement.LoadSceneMode;
 
 namespace Level.Data
 {
-    [CreateAssetMenu(menuName = "SO/LevelSO")]
+    [CreateAssetMenu(menuName = "SO/LevelData")]
     public class LevelDataSO : ScriptableObject
     {
         [SerializeField] private AssetReference _lightingSceneAssetReference;

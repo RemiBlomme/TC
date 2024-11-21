@@ -32,7 +32,6 @@ namespace Symlink.Editor
             
             Process process = Process.Start(startInfo);
             process.WaitForExit();
-            process.Dispose();
 
             if (process.ExitCode == 0)
             {
@@ -45,6 +44,7 @@ namespace Symlink.Editor
             }
 
             AssetDatabase.Refresh(ImportAssetOptions.ForceUpdate);
+            process.Dispose();
         }
 
         public static void RemoveSymlink(string assetFolderPath)

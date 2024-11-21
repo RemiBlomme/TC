@@ -35,7 +35,7 @@ namespace Symlink.Editor
                 return;
             }
 
-            rootVisualElement.Add(VisualTreeBuilder.Get(CreateVisualElement()));
+            //rootVisualElement.Add(VisualTreeMaker.Get(CreateToggle()));
 
             rootVisualElement.Add(CreateButton("Update", OnUpdateClicked));
 
@@ -53,6 +53,8 @@ namespace Symlink.Editor
                 if (_dirToggles[i].value) Symlink.CreateSymlink(_symlinkDirInfos[i].FullName, assetPath);
                 else Symlink.RemoveSymlink(assetPath);
             }
+
+            AddressableManager.Scan();
         }
 
         private void DisplaySubDirectories(DirectoryInfo symlinkDir, VisualElement root)
@@ -84,48 +86,57 @@ namespace Symlink.Editor
         }
     }
 
-    public class VisualTreeBuilder
+    public class VisualTreeMaker
     {
         private static TreeView _treeView;
         private static VisualElement _toAdd;
+        private static int _index;
 
         public static TreeView Get(VisualElement element)
         {
-            var items = new List<TreeViewItemData<string>>(10);
-            for (var i = 0; i < items.Count; i++)
-            {
-                var itemIndex = i * items.Count + i;
-
-                var treeViewSubItemsData = items;
-                for (var j = 0; j < items.Count; j++)
-                {
-                    treeViewSubItemsData.Add(new TreeViewItemData<string>(itemIndex + j + 1, (j + 1).ToString()));
-                }
-
-                var treeViewItemData = new TreeViewItemData<string>(itemIndex, (i + 1).ToString(), treeViewSubItemsData);
-                items.Add(treeViewItemData);
-            }
-
-
-
+            _treeView = new TreeView();
             _toAdd = element;
 
-            TreeView treeView = new();
-            treeView.SetRootItems(items);
-            treeView.makeItem = MakeItem;
-            treeView.bindItem = BindItem;
-            treeView.selectionType = SelectionType.Multiple;
-            treeView.Rebuild();
+            List<TreeViewItemData<string>> child1Items = new()
+            {
+                new TreeViewItemData<string>(6 , "0"),
+                new TreeViewItemData<string>(7 , "1"),
+            };
 
-            return treeView;
+            List<TreeViewItemData<string>> childItems = new()
+            {
+                new TreeViewItemData<string>(3 , "0", child1Items),
+                new TreeViewItemData<string>(4 , "1"),
+                new TreeViewItemData<string>(5 , "2"),
+            };
+
+            List<TreeViewItemData<string>> rootItems = new()
+            {
+                new TreeViewItemData<string>(0 , "0", childItems),
+                new TreeViewItemData<string>(1 , "1"),
+                new TreeViewItemData<string>(2 , "2"),
+            };
+
+
+            _treeView.SetRootItems(rootItems);
+            _treeView.makeItem = MakeItem;
+            _treeView.bindItem = BindItem;
+            _treeView.Rebuild();
+
+            return _treeView;
         }
 
-        private static VisualElement MakeItem() => _toAdd;
+        private TreeViewItemData<string> GetNewItem(string text)
+        {
+            return new TreeViewItemData<string>(_index++, text);
+        }
+
+        private static VisualElement MakeItem() => CreateToggle();
 
         private static void BindItem(VisualElement element, int index)
         {
             var item = _treeView.GetItemDataForIndex<string>(index);
-            (element as Label).text = item;
+            (element as Toggle).text = item;
         }
     }
 }

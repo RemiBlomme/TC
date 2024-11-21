@@ -6,52 +6,6 @@ using UnityEngine.UIElements;
 
 namespace Misc.Editor
 {
-    //[MainToolbarElement(id: "RightToolBar", ToolbarAlign.Right, order: 0)]
-    //public class RightToolBar : VisualElement
-    //{
-    //    private ShortcutDropDownToolBar _dropdownShortcut;
-    //    private CreateFeatureToolBar _button;
-
-    //    private VisualElement _lastVisualElement;
-
-
-    //    public void InitializeElement()
-    //    {
-    //        style.minWidth = 200;
-    //        style.flexDirection = FlexDirection.Row;
-
-    //        _dropdownShortcut = new();
-    //        _dropdownShortcut.InitializeElement();
-    //        _dropdownShortcut.RegisterValueChangedCallback((evt) => ChangeElements(evt.newValue));
-    //        Add(_dropdownShortcut);
-
-    //        _button = new();
-    //        _button.InitializeElement();
-    //        Add(_button);
-    //    }
-
-    //    private VisualElement ChangeElements(string dropDownChoice)
-    //    {
-    //        switch (dropDownChoice)
-    //        {
-    //            case "Features":
-    //                AddElement(_button);
-    //                return _button;
-
-    //            default:
-    //                AddElement(null);
-    //                return null;
-    //        }
-    //    }
-
-    //    private void AddElement(VisualElement visualElement)
-    //    {
-    //        if (_lastVisualElement != null) _lastVisualElement.style.display = DisplayStyle.None;
-    //        visualElement.style.display = DisplayStyle.Flex;
-    //        _lastVisualElement = visualElement;
-    //    }
-    //}
-
     public static class Shelves
     {
         public const string ADDRESSABLE = "Addressable";
@@ -141,7 +95,19 @@ namespace Misc.Editor
     }
 
 
-    [MainToolbarElement(id: "BuildAddressableButtonToolBar", ToolbarAlign.Right, order: 1)]
+    [MainToolbarElement(id: "ScanAddressableShelf", ToolbarAlign.Right, order: 1)]
+    public class ScanAddressableShelf : Shelf
+    {
+        public override void Initialize()
+        {
+            _shortcut = Shelves.ADDRESSABLE;
+
+            text = "Scan";
+            clicked += () => AddressableManager.Scan();
+        }
+    }
+
+    [MainToolbarElement(id: "BuildAddressableButtonToolBar", ToolbarAlign.Right, order: 2)]
     public class BuildAddressableShelf : Shelf
     {
         public override void Initialize()
@@ -149,7 +115,19 @@ namespace Misc.Editor
             _shortcut = Shelves.ADDRESSABLE;
 
             text = "Build";
-            clicked += () => AddressableAssetSettings.BuildPlayerContent();
+            clicked += () => AddressableManager.Build();
+        }
+    }
+
+    [MainToolbarElement(id: "ClearAddressableShelf", ToolbarAlign.Right, order: 3)]
+    public class ClearAddressableShelf : Shelf
+    {
+        public override void Initialize()
+        {
+            _shortcut = Shelves.ADDRESSABLE;
+
+            text = "Clear";
+            clicked += () => AddressableManager.Clear();
         }
     }
 }

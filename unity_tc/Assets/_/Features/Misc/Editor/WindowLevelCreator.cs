@@ -4,6 +4,7 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
+using static UnityEngine.EventSystems.EventTrigger;
 
 namespace Misc.Editor
 {
@@ -46,10 +47,13 @@ namespace Misc.Editor
         {
             var mainFolderPath = CreateFolder(_levelName, Paths.LEVEL_FOLDER_PATH);
             CreateFolder("Scenes", mainFolderPath);
-            CreateLevelData(_levelName, mainFolderPath);
+
+            var addressableDefinitionSO = CreateSO($"{_levelName} AddressableDefinition", mainFolderPath, nameof(AddressableDefinitionSO));
+            AssetDatabase.SetLabels(addressableDefinitionSO, new[] { "AddressableIgnore" });
+
+            CreateSO(_levelName, mainFolderPath, nameof(LevelDataSO));
 
             Debug.Log($"New Level Created: <color=cyan>{_levelName}</color>");
-
             GUIContent notification = new("Level Created");
             SceneView.lastActiveSceneView.ShowNotification(notification);
 
@@ -66,15 +70,17 @@ namespace Misc.Editor
             return folderPath;
         }
 
-        private void CreateLevelData(string name, string folderPath)
+        private ScriptableObject CreateSO(string name, string folderPath, string className)
         {
             string newPath = $"{folderPath}/{name}.asset";
 
-            AssetDatabase.CreateAsset(
-                ScriptableObject.CreateInstance(nameof(LevelDataSO)),
-                newPath);
+            var so = CreateInstance(className);
+            AssetDatabase.CreateAsset(so, newPath);
+            
+            //AssetDatabase.Refresh();
+            AssetDatabase.SaveAssetIfDirty(new GUID(AssetDatabase.AssetPathToGUID(newPath)));
 
-            AssetDatabase.Refresh();
+            return so;
         }
     }
 }

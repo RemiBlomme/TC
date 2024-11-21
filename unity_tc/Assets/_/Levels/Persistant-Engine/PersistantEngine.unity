@@ -163,7 +163,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba236a286b0cab84a8583f3eb3fbab82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _levelToLoad: {fileID: 11400000, guid: bd36d4a0d55e8ac4f8cb90b02799aaec, type: 2}
+  _levelToLoad:
+    m_AssetGUID: bd36d4a0d55e8ac4f8cb90b02799aaec
+    m_SubObjectName: 
+    m_SubObjectGUID: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
 --- !u!114 &84794416
 MonoBehaviour:
   m_ObjectHideFlags: 0

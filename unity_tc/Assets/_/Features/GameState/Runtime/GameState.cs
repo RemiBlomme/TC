@@ -1,6 +1,6 @@
-using Level.Data;
 using Level.Runtime;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.GUID;
 
 namespace GameState.Runtime
@@ -9,7 +9,7 @@ namespace GameState.Runtime
     {
         [SerializeField] private GuidReference _levelLoader;
 
-        private LevelDataSO _loadedLevelData;
+        private AssetReference _loadedLevelData;
 
 
         private void Awake()
@@ -17,6 +17,6 @@ namespace GameState.Runtime
             _levelLoader.gameObject.GetComponent<LevelLoader>().LevelLoaded += OnLevelLoaded;
         }
 
-        private void OnLevelLoaded(LevelDataSO levelData) => _loadedLevelData = levelData;
+        private void OnLevelLoaded(AssetReference levelLoaded) => _loadedLevelData = levelLoaded;
     }
 }

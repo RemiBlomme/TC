@@ -1,5 +1,7 @@
 fileFormatVersion: 2
-guid: bd36d4a0d55e8ac4f8cb90b02799aaec
+guid: 3b5f99325e976db4195db9f1b61abc9b
+labels:
+- AddressableIgnore
 NativeFormatImporter:
   externalObjects: {}
   mainObjectFileID: 11400000
