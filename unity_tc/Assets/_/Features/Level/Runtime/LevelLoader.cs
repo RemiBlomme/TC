@@ -1,5 +1,4 @@
 using Level.Data;
-using System;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -8,48 +7,34 @@ namespace Level.Runtime
 {
     public class LevelLoader : MonoBehaviour
     {
-        public event Action<AssetReference> LevelLoaded;
-
-        [SerializeField] private AssetReference _levelToLoad;
-        private AssetReference _currentLevel;
+        [SerializeField] private AssetReferenceT<LevelDataSO> _levelToLoad;
+        [SerializeField] private bool _loadOnStart;
 
 
-        private void Start()
+        private void Awake()
         {
-            LoadLevel(_levelToLoad);
+            if (!_levelToLoad.IsValid())
+            {
+                Debug.LogWarning($"[LEVEL]: <color=cyan>{nameof(LevelLoader)}</color> doesn't have a <color=cyan>{nameof(_levelToLoad)}</color>");
+                return;
+            }
+
+            if (_loadOnStart) LoadLevel(_levelToLoad);
         }
 
-        private void OnGUI()
+        public void LoadLevel(AssetReferenceT<LevelDataSO> newLevel)
         {
-            if (GUILayout.Button("Unload Level"))
-                _currentLevel.LoadAssetAsync<LevelDataSO>().Completed += OnCompletedCLoseLevel;
+            if (!newLevel.IsValid()) return;
+            newLevel.LoadAssetAsync().Completed += OnLevelDataLoaded;
         }
 
-        public void LoadLevel(AssetReference newLevel)
-        {
-            _currentLevel.LoadAssetAsync<LevelDataSO>().Completed += OnCompletedCLoseLevel;
-            newLevel.LoadAssetAsync<LevelDataSO>().Completed += OnCompletedOpenLevel;
-            _currentLevel = newLevel;
-
-            LevelLoaded?.Invoke(_currentLevel);
-        }
-
-        private void OnCompletedOpenLevel(AsyncOperationHandle<LevelDataSO> handle)
+        private void OnLevelDataLoaded(AsyncOperationHandle<LevelDataSO> handle)
         {
             if (handle.Status == AsyncOperationStatus.Succeeded)
             {
-                handle.Result.OpenLevel();
+                Game.Runtime.State.LoadLevel(handle.Result);
             }
-            else Debug.LogWarning("[ADDRESSABLE]: Addressable can not load");
-        }
-
-        private void OnCompletedCLoseLevel(AsyncOperationHandle<LevelDataSO> handle)
-        {
-            if (handle.Status == AsyncOperationStatus.Succeeded)
-            {
-                handle.Result.CloseLevel();
-            }
-            else Debug.LogWarning("[ADDRESSABLE]: Addressable can not load");
+            else Debug.LogError($"<color=red>[ADDRESSABLE]:</color> Addressable scene <color=cyan>{handle.DebugName}</color> can't load.");
         }
     }
 }

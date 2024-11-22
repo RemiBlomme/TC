@@ -49,8 +49,9 @@ namespace Level.Data
                     _sceneAssetReferences[i].LoadSceneAsync(asSingle && i == 0 ? LoadSceneMode.Single : LoadSceneMode.Additive);
                 }
 
-                _lightingSceneAssetReference.LoadSceneAsync(LoadSceneMode.Additive)
-                    .Completed += (evt) => SceneManager.SetActiveScene(evt.Result.Scene);
+                if (_lightingSceneAssetReference.Asset)
+                    _lightingSceneAssetReference.LoadSceneAsync(LoadSceneMode.Additive)
+                        .Completed += (evt) => SceneManager.SetActiveScene(evt.Result.Scene);
 
                 return;
             }
@@ -63,8 +64,9 @@ namespace Level.Data
                         asSingle && i == 0 ? OpenSceneMode.Single : OpenSceneMode.Additive);
             }
 
-            SceneManager.SetActiveScene(EditorSceneManager.OpenScene(
-                AssetDatabase.GUIDToAssetPath(_lightingSceneAssetReference.AssetGUID), OpenSceneMode.Additive));
+            if (_lightingSceneAssetReference.Asset)
+                SceneManager.SetActiveScene(EditorSceneManager.OpenScene(
+                    AssetDatabase.GUIDToAssetPath(_lightingSceneAssetReference.AssetGUID), OpenSceneMode.Additive));
 #endif
         }
 
@@ -79,7 +81,8 @@ namespace Level.Data
                     _sceneAssetReferences[i].UnLoadScene();
                 }
 
-                _lightingSceneAssetReference.UnLoadScene();
+                if (_lightingSceneAssetReference.Asset)
+                    _lightingSceneAssetReference.UnLoadScene();
 
                 return;
             }
@@ -91,8 +94,9 @@ namespace Level.Data
                     SceneManager.GetSceneByPath(AssetDatabase.GUIDToAssetPath(_sceneAssetReferences[i].AssetGUID)), true);
             }
 
-            EditorSceneManager.CloseScene(
-                SceneManager.GetSceneByPath(AssetDatabase.GUIDToAssetPath(_lightingSceneAssetReference.AssetGUID)), true);
+            if (_lightingSceneAssetReference.Asset)
+                EditorSceneManager.CloseScene(
+                    SceneManager.GetSceneByPath(AssetDatabase.GUIDToAssetPath(_lightingSceneAssetReference.AssetGUID)), true);
 #endif
         }
     }

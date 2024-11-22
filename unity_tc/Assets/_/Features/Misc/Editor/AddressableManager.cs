@@ -1,5 +1,3 @@
-using Misc.Runtime;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEditor;
@@ -7,6 +5,7 @@ using UnityEditor.AddressableAssets;
 using UnityEditor.AddressableAssets.Settings;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using Misc.Data;
 
 namespace Misc.Editor
 {
@@ -22,38 +21,16 @@ namespace Misc.Editor
                 string parentFolderName = Path.GetFileName(parentFolderPath);
                 string[] childGuids = AssetDatabase.FindAssets("", new[] { parentFolderPath });
 
-                bool groupFounded = TryGetAddressableAssetGroup(parentFolderName, out AddressableAssetGroup group);
-                var newGroup = groupFounded ? group : NewAddressableAssetGroup(parentFolderName);
-
-                // Has to be used
-                List<AddressableAssetEntry> entryList = new();
-                AddressableAssetSettingsDefaultObject.Settings.GetAllAssets(entryList, true, GroupFilter);
+                bool alreadyExist = TryGetAddressableAssetGroup(parentFolderName, out AddressableAssetGroup group);
+                var newGroup = group ?? NewAddressableAssetGroup(parentFolderName);
 
                 for (int j = 0; j < childGuids.Length; j++)
                 {
                     if (AssetDatabase.GetLabels(new GUID(childGuids[j])).Contains(Labels.ADDRESSABLE_IGNORE)) continue;
-
-                    if (ExistInGroup(childGuids[j], entryList.ToArray()))
-                        SetAsAddressable($"{childGuids[j]}", newGroup, true);
+                    SetAsAddressable($"{childGuids[j]}", newGroup, true);
                 }
             }
-        }
-
-        private static bool GroupFilter(AddressableAssetGroup group)
-        {
-
-
-            return false;
-        }
-
-        private static bool ExistInGroup(string guid, AddressableAssetEntry[] addressableAssetEntries)
-        {
-            for (int i = 0; i < addressableAssetEntries.Length; i++) 
-            {
-                if (guid == AssetDatabase.AssetPathToGUID(addressableAssetEntries[i].AssetPath))
-                    return true;
-            }
-            return false;
+            Clear();
         }
 
         public static void Build() => AddressableAssetSettings.BuildPlayerContent();
@@ -61,8 +38,8 @@ namespace Misc.Editor
         public static void Clear()
         {
             var settings = AddressableAssetSettingsDefaultObject.Settings;
-            
-            for (int i = 0; i < settings.groups.Count; i++)
+
+            for (int i = settings.groups.Count - 1; i > -1; i--)
             {
                 if (settings.groups[i].entries.Count == 0 && settings.groups[i] != settings.DefaultGroup)
                 {
@@ -92,7 +69,7 @@ namespace Misc.Editor
         {
             if (TryGetAddressableAssetGroup(groupName, out AddressableAssetGroup group))
             {
-                Debug.Log($"<color=cyan>[ADDRESSABLE]:</color> <color=red>The group</color> <color=cyan>{groupName}</color> <color=red>that you are trying to create already exist.</color>");
+                Debug.Log($"<color=red>[ADDRESSABLE]:</color> The group <color=cyan>{groupName}</color> that you are trying to create already exist.");
                 return null;
             }
 

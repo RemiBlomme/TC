@@ -31,7 +31,7 @@ namespace Symlink.Editor
 
             if (symlinkDir == null)
             {
-                Debug.LogError("<color=cyan>[SYMLINK]:</color> <color=red>symlink directory not found!</color>");
+                Debug.LogError($"<color=red>[SYMLINK]:</color> <color=cyan>{symlinkDir}</color> not found!");
                 return;
             }
 
@@ -48,10 +48,10 @@ namespace Symlink.Editor
         {
             for (int i = 0; i < _dirToggles.Count; i++)
             {
-                string assetPath = Symlink.ConvertToAssetsFullPath(_symlinkDirInfos[i].FullName);
+                string assetPath = SymlinkManager.ConvertToAssetsFullPath(_symlinkDirInfos[i].FullName);
 
-                if (_dirToggles[i].value) Symlink.CreateSymlink(_symlinkDirInfos[i].FullName, assetPath);
-                else Symlink.RemoveSymlink(assetPath);
+                if (_dirToggles[i].value) SymlinkManager.CreateSymlink(_symlinkDirInfos[i].FullName, assetPath);
+                else SymlinkManager.RemoveSymlink(assetPath);
             }
 
             AddressableManager.Scan();
@@ -63,7 +63,7 @@ namespace Symlink.Editor
             for (int i = 0; i < childDirectories.Length; i++)
             {
                 _symlinkDirInfos.Add(childDirectories[i]);
-                string assetPath = Symlink.ConvertToAssetsFullPath(childDirectories[i].FullName);
+                string assetPath = SymlinkManager.ConvertToAssetsFullPath(childDirectories[i].FullName);
 
                 VisualElement header;
                 Toggle toggle;

@@ -8,7 +8,7 @@ namespace Misc.Editor
     public class ProjectExtensionDrawer : MonoBehaviour
     {
         private const int SYMLINK_DOT_WIDTH = 15;
-        private static readonly Color SYMLINK_DOT_COLOR = new Color(0f, 0.75f, 1f);
+        private static readonly Color SYMLINK_DOT_COLOR = new Color(1f, 0.75f, 0f);
 
 
         static ProjectExtensionDrawer()
