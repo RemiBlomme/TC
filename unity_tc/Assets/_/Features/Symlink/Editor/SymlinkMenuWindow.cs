@@ -1,3 +1,4 @@
+using AddressableDefinition.Editor;
 using Misc.Editor;
 using System.Collections.Generic;
 using System.IO;
