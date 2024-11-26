@@ -169,6 +169,7 @@ MonoBehaviour:
     m_SubObjectGUID: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
+  _loadOnStart: 0
 --- !u!114 &84794416
 MonoBehaviour:
   m_ObjectHideFlags: 0

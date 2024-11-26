@@ -1,60 +1,58 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
-using UnityEngine.ResourceManagement.AsyncOperations;
-
-using Object = UnityEngine.Object;
 
 namespace Undirty
 {
     public static class PoolManager
     {
-        private static Dictionary<AssetReference, Stack<Object>> _pools = new();
+        private static Dictionary<AssetReference, Pool> _pools = new();
+        private static Dictionary<GameObject, Pool> _bindings = new();
 
 
-        public static Object Get(AssetReference assetReference, int poolSize)
+        public static void GetInstanceOf(AssetReference assetReference, Action<GameObject> callback, int poolCapacity = 0)
         {
-            if (_pools.TryGetValue(assetReference, out Stack<Object> pool))
-            {
-                if (pool.Count < poolSize)
-                {
-                    int number = poolSize - pool.Count;
-                    Prepare(assetReference, number);
-                    Debug.LogWarning($"[POOL MANAGER]: The pool size of the {assetReference} was resized by {number} elements.");
-                }
-            }
-            else
-            {
-                _pools.Add(assetReference, new Stack<Object>(poolSize));
-            }
+            GetPoolAsync(assetReference, poolCapacity, OnGetPool);
 
-            if (pool.TryPop(out Object result)) return result;
+            void OnGetPool(Pool pool)
+            {
+                pool.WaitItemPoolCreated(OnItemPoolCreated);
 
-            Prepare(assetReference, 1);
-            _pools[assetReference].Push(result);
-            
+                void OnItemPoolCreated() => pool.Pop(callback);
+            }
         }
 
-        public static void Release(AssetReference assetReference, Object obj)
+        public static void Release(GameObject go)
         {
-            _pools[assetReference].Push(obj);
+            _bindings[go].Push(go);
+            _bindings.Remove(go);
         }
 
-
-        public static void Prepare(AssetReference original, int amount)
+        public static bool HasPool(AssetReference assetReference)
         {
-            for (int i = 0; i < amount; i++)
-            {
-                original.InstantiateAsync().Completed += OnAssetPrepared;
-            }
-
-            void OnAssetPrepared(AsyncOperationHandle<GameObject> handle)
-            {
-                handle.Result.SetActive(false);
-
-                if (!_pools.ContainsKey(original)) _pools.Add(original, new Stack<Object>(amount));
-                _pools[original].Push(handle.Result);
-            }
+            return _pools.ContainsKey(assetReference);
         }
+
+        public static void GetPoolAsync(AssetReference assetReference, int poolCapacity, Action<Pool> onGetPool = null)
+        {
+            if (HasPool(assetReference))
+            {
+                _pools[assetReference].ExtendTo(poolCapacity, onGetPool);
+            }
+            else CreatePool(assetReference, poolCapacity, onGetPool);
+        }
+
+        public static Pool CreatePool(AssetReference assetReference, int poolCapacity, Action<Pool> callback = null)
+        {
+            var pool = new Pool(assetReference, poolCapacity, callback);
+            pool.InstanceCreated += OnInstanceCreated;
+            _pools.Add(assetReference, pool);
+
+            return pool;
+        }
+
+        private static void OnInstanceCreated(GameObject go, Pool pool)
+            => _bindings.Add(go, pool);
     }
 }

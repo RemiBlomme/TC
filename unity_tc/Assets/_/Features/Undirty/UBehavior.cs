@@ -1,4 +1,5 @@
 using System;
+using Undirty;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -13,37 +14,55 @@ namespace UnDirty
         [SerializeField] protected bool _isVerbose;
 
 
-        public static void Spawn(AssetReference original, Action<Object> callback = null, int poolSize = 0)
+        public static void Spawn(AssetReference original, int poolCapacity = 0, Action<Object> callback = null)
         {
-            Spawn(original, Vector3.zero, Quaternion.identity, null, callback, poolSize);
+            Spawn(original, Vector3.zero, Quaternion.identity, null, poolCapacity, callback);
         }
 
-        public static void Spawn(AssetReference original, Transform parent, bool instantiateInWorldSpace, Action<Object> callback = null, int poolSize = 0)
+        public static void Spawn(AssetReference original, Transform parent, bool instantiateInWorldSpace, int poolCapacity = 0, Action<Object> callback = null)
         {
             Vector3 position = instantiateInWorldSpace ? Vector3.zero : parent.position;
             Quaternion rotation = instantiateInWorldSpace ? Quaternion.identity : parent.rotation;
 
-            Spawn(original, position, rotation, parent, callback, poolSize);
+            Spawn(original, position, rotation, parent, poolCapacity, callback);
         }
 
-        public static void Spawn(AssetReference original, Vector3 position, Quaternion rotation, Action<Object> callback = null, int poolSize = 0)
+        public static void Spawn(AssetReference original, Vector3 position, Quaternion rotation, int poolCapacity = 0, Action<Object> callback = null)
         {
-            Spawn(original, position, rotation, null, callback, poolSize);
+            Spawn(original, position, rotation, null, poolCapacity, callback);
         }
 
-        public static void Spawn(AssetReference original, Vector3 position, Quaternion rotation, Transform parent, Action<Object> callback = null, int poolSize = 0)
+        public static void Spawn(AssetReference original, Vector3 position, Quaternion rotation, Transform parent, int poolCapacity = 0, Action<Object> callback = null)
         {
-            original.InstantiateAsync(position, rotation, parent).Completed += OnSpawn;
-
-            void OnSpawn(AsyncOperationHandle<GameObject> handle)
+            if (poolCapacity <= 0 && !PoolManager.HasPool(original))
             {
-                callback?.Invoke(handle.Result);
+                original.InstantiateAsync(position, rotation, parent).Completed += OnSpawn;
+
+                void OnSpawn(AsyncOperationHandle<GameObject> handle)
+                {
+                    callback?.Invoke(handle.Result);
+                }
+            }
+            else
+            {
+                PoolManager.GetInstanceOf(original, OnSpawn, poolCapacity);
+
+                void OnSpawn(GameObject go)
+                {
+                    var transform = go.transform;
+
+                    transform.position = position;
+                    transform.rotation = rotation;
+                    transform.parent = parent;
+
+                    callback?.Invoke(go);
+                }
             }
         }
 
-        public static void Release()
+        public static void Release(GameObject go)
         {
-
+            PoolManager.Release(go);
         }
 
 
