@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Game.Runtime
 {
-    public class State : MonoBehaviour
+    public class GameState : MonoBehaviour
     {
         private static LevelDataSO _currentLevelLoaded;
 

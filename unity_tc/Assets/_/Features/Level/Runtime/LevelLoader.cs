@@ -32,7 +32,7 @@ namespace Level.Runtime
         {
             if (handle.Status == AsyncOperationStatus.Succeeded)
             {
-                Game.Runtime.State.LoadLevel(handle.Result);
+                Game.Runtime.GameState.LoadLevel(handle.Result);
             }
             else Debug.LogError($"<color=red>[ADDRESSABLE]:</color> Addressable scene <color=cyan>{handle.DebugName}</color> can't load.");
         }

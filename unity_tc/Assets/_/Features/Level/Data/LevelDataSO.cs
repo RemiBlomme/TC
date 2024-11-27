@@ -2,10 +2,11 @@
 using UnityEditor;
 using UnityEditor.SceneManagement;
 #endif
+using System;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.AddressableAssets;
-using System.Linq;
 
 using LoadSceneMode = UnityEngine.SceneManagement.LoadSceneMode;
 
@@ -17,6 +18,7 @@ namespace Level.Data
     {
         [SerializeField] private AssetReference _lightingSceneAssetReference;
         [SerializeField] private AssetReference[] _sceneAssetReferences;
+        [SerializeField] private SceneData[] _sceneData;
 
 
         public void AddScene(AssetReference assetReference)
@@ -99,5 +101,12 @@ namespace Level.Data
                     SceneManager.GetSceneByPath(AssetDatabase.GUIDToAssetPath(_lightingSceneAssetReference.AssetGUID)), true);
 #endif
         }
+    }
+
+    [Serializable]
+    public struct SceneData
+    {
+        public int ScenePriority;
+        public AssetReference SceneAssetReference;
     }
 }

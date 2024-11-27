@@ -1,17 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
+using static UnityEngine.Rendering.VirtualTexturing.Debugging;
+
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace Undirty
 {
     public class Pool
     {
         public int Capacity;
-        public Action<GameObject, Pool> InstanceCreated;
+        public Action<GameObject, Pool> OnGetItem;
 
         private AssetReference _assetReference;
         private Stack<GameObject> _stack;
@@ -20,7 +25,7 @@ namespace Undirty
         public Pool(AssetReference assetReference, int capacity, Action<Pool> callback = null)
         {
             _assetReference = assetReference;
-            _stack = new Stack<GameObject>(capacity);
+            _stack = new(capacity);
 
             ExtendTo(capacity, callback);
         }
@@ -40,18 +45,20 @@ namespace Undirty
             Prepare(add, callback);
         }
 
-        public void Push(GameObject obj)
+        public void Push(GameObject go)
         {
-            _stack.Push(obj);
+            go.SetActive(false);
+            _stack.Push(go);
         }
 
-        public void Pop(Action<GameObject> callback)
+        public void PopAsync(Action<GameObject> callback)
         {
             if (_stack.Count == 0)
             {
                 ExtendTo(Capacity + 1, OnExtendCompleted);
+#if UNITY_EDITOR
                 Debug.LogWarning($"<color=yellow>[POOL MANAGER]: The pool size of the {AssetDatabase.GUIDToAssetPath(_assetReference.AssetGUID)} was resized.</color>");
-
+#endif
                 void OnExtendCompleted(Pool pool) => GetItem(callback);
             }
             else GetItem(callback);
@@ -61,19 +68,12 @@ namespace Undirty
         {
             GameObject go = _stack.Pop();
             go.SetActive(true);
+            OnGetItem?.Invoke(go, this);
             callback?.Invoke(go);
         }
 
-        public bool TryPop(out GameObject obj)
-        {
-            if (_stack.TryPop(out GameObject item))
-            {
-                obj = item;
-                return true;
-            }
-            obj = null;
-            return false;
-        }
+        public bool TryPop(out GameObject go)
+            => _stack.TryPop(out go);
 
         private void Prepare(int amount = 1, Action<Pool> callback = null)
         {
@@ -84,32 +84,27 @@ namespace Undirty
                 var handle = _assetReference.InstantiateAsync();
                 handle.Completed += OnAssetPrepared;
                 _remaningTaskList.Add(handle.Task);
+            }
 
-                void OnAssetPrepared(AsyncOperationHandle<GameObject> handle)
-                {
-                    handle.Result.SetActive(false);
-                    _stack.Push(handle.Result);
-                    InstanceCreated?.Invoke(handle.Result, this);
+            void OnAssetPrepared(AsyncOperationHandle<GameObject> handle)
+            {
+                _stack.Push(handle.Result);
+                
 
-                    if (--remaining <= 0) callback?.Invoke(this);
-                }
+                if (--remaining <= 0) callback?.Invoke(this);
             }
         }
 
-        //private async void WaitPoolCreated(/*Action onCompleted*/)
-        //{
-        //    await Task.WhenAll(_remaningTaskList);
-        //    _remaningTaskList.Clear();
-        //    onCompleted?.Invoke();
-        //}
-
         public async void WaitItemPoolCreated(Action onCompleted)
         {
-            await Task.WhenAny(_remaningTaskList);
+            if (_remaningTaskList.Count > 0) await Task.WhenAny(_remaningTaskList);
             onCompleted?.Invoke();
 
-            await Task.WhenAll(_remaningTaskList);
-            _remaningTaskList.Clear();
+            if (_remaningTaskList.Count > 0)
+            {
+                await Task.WhenAll(_remaningTaskList);
+                _remaningTaskList.Clear();
+            }
         }
     }
 }

@@ -19,7 +19,7 @@ namespace Undirty
             {
                 pool.WaitItemPoolCreated(OnItemPoolCreated);
 
-                void OnItemPoolCreated() => pool.Pop(callback);
+                void OnItemPoolCreated() => pool.PopAsync(callback);
             }
         }
 
@@ -30,29 +30,21 @@ namespace Undirty
         }
 
         public static bool HasPool(AssetReference assetReference)
-        {
-            return _pools.ContainsKey(assetReference);
-        }
+            => _pools.ContainsKey(assetReference);
 
         public static void GetPoolAsync(AssetReference assetReference, int poolCapacity, Action<Pool> onGetPool = null)
         {
-            if (HasPool(assetReference))
-            {
-                _pools[assetReference].ExtendTo(poolCapacity, onGetPool);
-            }
+            if (HasPool(assetReference)) _pools[assetReference].ExtendTo(poolCapacity, onGetPool);
             else CreatePool(assetReference, poolCapacity, onGetPool);
         }
 
         public static Pool CreatePool(AssetReference assetReference, int poolCapacity, Action<Pool> callback = null)
         {
             var pool = new Pool(assetReference, poolCapacity, callback);
-            pool.InstanceCreated += OnInstanceCreated;
+            pool.OnGetItem += _bindings.Add;
             _pools.Add(assetReference, pool);
 
             return pool;
         }
-
-        private static void OnInstanceCreated(GameObject go, Pool pool)
-            => _bindings.Add(go, pool);
     }
 }
