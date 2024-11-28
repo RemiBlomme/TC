@@ -1,15 +1,15 @@
-#if UNITY_EDITOR
-using UnityEditor;
-using UnityEditor.SceneManagement;
-#endif
 using System;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.AddressableAssets;
 
-using LoadSceneMode = UnityEngine.SceneManagement.LoadSceneMode;
+#if UNITY_EDITOR
+using UnityEditor;
+using UnityEditor.SceneManagement;
+#endif
 
+using LoadSceneMode = UnityEngine.SceneManagement.LoadSceneMode;
 
 namespace Level.Data
 {
@@ -39,6 +39,7 @@ namespace Level.Data
             _sceneAssetReferences = newSceneAssetReference;
         }
         public AssetReference[] GetScenes() => _sceneAssetReferences;
+        public SceneData[] GetSceneData() => _sceneData;
 
 
         /// <summary>Open all referenced scenes</summary>
@@ -51,7 +52,7 @@ namespace Level.Data
                     _sceneAssetReferences[i].LoadSceneAsync(asSingle && i == 0 ? LoadSceneMode.Single : LoadSceneMode.Additive);
                 }
 
-                if (_lightingSceneAssetReference.Asset)
+                if (_lightingSceneAssetReference.AssetGUID != "")
                     _lightingSceneAssetReference.LoadSceneAsync(LoadSceneMode.Additive)
                         .Completed += (evt) => SceneManager.SetActiveScene(evt.Result.Scene);
 
@@ -66,7 +67,7 @@ namespace Level.Data
                         asSingle && i == 0 ? OpenSceneMode.Single : OpenSceneMode.Additive);
             }
 
-            if (_lightingSceneAssetReference.Asset)
+            if (_lightingSceneAssetReference.AssetGUID != "")
                 SceneManager.SetActiveScene(EditorSceneManager.OpenScene(
                     AssetDatabase.GUIDToAssetPath(_lightingSceneAssetReference.AssetGUID), OpenSceneMode.Additive));
 #endif
@@ -83,7 +84,7 @@ namespace Level.Data
                     _sceneAssetReferences[i].UnLoadScene();
                 }
 
-                if (_lightingSceneAssetReference.Asset)
+                if (_lightingSceneAssetReference.IsValid())
                     _lightingSceneAssetReference.UnLoadScene();
 
                 return;
@@ -96,7 +97,7 @@ namespace Level.Data
                     SceneManager.GetSceneByPath(AssetDatabase.GUIDToAssetPath(_sceneAssetReferences[i].AssetGUID)), true);
             }
 
-            if (_lightingSceneAssetReference.Asset)
+            if (_lightingSceneAssetReference.IsValid())
                 EditorSceneManager.CloseScene(
                     SceneManager.GetSceneByPath(AssetDatabase.GUIDToAssetPath(_lightingSceneAssetReference.AssetGUID)), true);
 #endif
@@ -106,7 +107,7 @@ namespace Level.Data
     [Serializable]
     public struct SceneData
     {
-        public int ScenePriority;
+        public int InputPriority;
         public AssetReference SceneAssetReference;
     }
 }

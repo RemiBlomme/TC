@@ -20,8 +20,8 @@ namespace Level.Editor
             switch (current)
             {
                 case LevelDataSO levelSO:
-                    levelSO.OpenLevel();
                     _lastActiveLevelData?.CloseLevel();
+                    levelSO.OpenLevel();
                     _lastActiveLevelData = levelSO;
                     return true;
 
