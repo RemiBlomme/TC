@@ -1,29 +1,27 @@
 ﻿using InputManager.Runtime;
 using Level.Runtime;
 using System.Collections.Generic;
-using UnityEditor;
 
 namespace Game.Runtime
 {
-    public class TaskManager
+    public static class TaskManager
     {
         private static List<Task> _taskList = new();
 
         public static void RegisterTask(Task task)
         {
             task.InputPriorityChanged += OnInputPriorityChanged;
+            _taskList.Add(task);
 
             var scenesData = LevelManager.CurrentLevelLoaded.GetSceneData();
 
-            for (int i = 0; i > scenesData.Length; i++)
+            for (int i = 0; i < scenesData.Length; i++)
             {
-                string sceneGUID = AssetDatabase.AssetPathToGUID(task.gameObject.scene.path);
-                if (sceneGUID == scenesData[i].SceneAssetReference.AssetGUID)
+                if (task.gameObject.scene.name == scenesData[i].SceneAssetReference.editorAsset.name)
                 {
                     task.InputPriority = scenesData[i].InputPriority;
                 }
             }
-            _taskList.Add(task);
         }
 
         public static void UnregisterTask(Task task)

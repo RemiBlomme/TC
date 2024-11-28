@@ -25,7 +25,7 @@ namespace ToolBar.Editor
                     }
 
                     // CORRECT THIS 
-                    Levels.GetLevelSelected().OpenLevel();
+                    //Levels.GetLevelSelected().OpenLevel();
                 }
 
                 if (!EditorApplication.isPlayingOrWillChangePlaymode)

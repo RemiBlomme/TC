@@ -15,6 +15,6 @@ namespace Level.Runtime
             if (_loadOnAwake) LoadLevel(_sceneToLoad);
         }
 
-        public void LoadLevel(AssetReferenceT<LevelDataSO> level) => LevelManager.LoadLevel(level);
+        public void LoadLevel(AssetReferenceT<LevelDataSO> level) => LevelManager.ChangeLevelFromAssetReference(level);
     }
 }

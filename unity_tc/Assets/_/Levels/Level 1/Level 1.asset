@@ -32,14 +32,14 @@ MonoBehaviour:
   _sceneData:
   - InputPriority: 10
     SceneAssetReference:
-      m_AssetGUID: 
+      m_AssetGUID: 87d1ddb41757f0c4795f544e2b90feee
       m_SubObjectName: 
       m_SubObjectGUID: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
   - InputPriority: 0
     SceneAssetReference:
-      m_AssetGUID: 
+      m_AssetGUID: 933ceb6a3997aac4eab8f6f02f0c0f92
       m_SubObjectName: 
       m_SubObjectGUID: 
       m_SubObjectType: 

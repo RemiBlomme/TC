@@ -1,16 +1,13 @@
 using Level.Data;
+using Level.Runtime;
 using UnityEditor;
 using UnityEditor.Callbacks;
-
 
 namespace Level.Editor
 {
     [CustomEditor(typeof(LevelDataSO))]
     public class OnOpenLevelSO : UnityEditor.Editor
     {
-        private static LevelDataSO _lastActiveLevelData;
-
-
         [OnOpenAsset]
         private static bool OnOpenAsset(int instanceId, int line, int row)
         {
@@ -20,9 +17,12 @@ namespace Level.Editor
             switch (current)
             {
                 case LevelDataSO levelSO:
-                    _lastActiveLevelData?.CloseLevel();
-                    levelSO.OpenLevel();
-                    _lastActiveLevelData = levelSO;
+                    if (LevelManager.CurrentLevelLoaded == levelSO)
+                    {
+                        LevelManager.CloseLevel(levelSO);
+                        return true;
+                    }
+                    LevelManager.ChangeLevel(levelSO);
                     return true;
 
                 default:
