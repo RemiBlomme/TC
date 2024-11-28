@@ -1,5 +1,6 @@
 ﻿using InputManager.Runtime;
 using Level.Runtime;
+using System;
 using System.Collections.Generic;
 
 namespace Game.Runtime
@@ -12,6 +13,9 @@ namespace Game.Runtime
         {
             task.InputPriorityChanged += OnInputPriorityChanged;
             _taskList.Add(task);
+
+            if (LevelManager.CurrentLevelLoaded == null)
+                throw new NullReferenceException($"[{nameof(TaskManager)}]: {nameof(LevelManager.CurrentLevelLoaded)} is null.");
 
             var scenesData = LevelManager.CurrentLevelLoaded.GetSceneData();
 

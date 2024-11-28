@@ -1,7 +1,8 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using Level.Data;
 using UnityEngine.AddressableAssets;
+using Level.Data;
+using System;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -10,9 +11,30 @@ using UnityEditor.SceneManagement;
 
 namespace Level.Runtime
 {
-    public class LevelManager
+    public static class LevelManager
     {
-        public static LevelDataSO CurrentLevelLoaded;
+        private static LevelDataSO currentLevelLoaded;
+
+        public static LevelDataSO CurrentLevelLoaded
+        {
+            get
+            {
+#if UNITY_EDITOR
+                string currentLevelPath = PlayerPrefs.GetString(nameof(CurrentLevelLoaded));
+                currentLevelLoaded = AssetDatabase.LoadAssetAtPath<LevelDataSO>(currentLevelPath);
+                //PlayerPrefs.DeleteKey(nameof(CurrentLevelLoaded));
+#endif
+                return currentLevelLoaded;
+            }
+            set
+            {
+                currentLevelLoaded = value;
+#if UNITY_EDITOR
+                PlayerPrefs.SetString(nameof(CurrentLevelLoaded), AssetDatabase.GetAssetPath(currentLevelLoaded));
+                PlayerPrefs.Save();
+#endif
+            }
+        }
 
 
         /// <summary>Close previous level and open level.</summary>
@@ -96,29 +118,5 @@ namespace Level.Runtime
 #endif
             CurrentLevelLoaded = null;
         }
-
-
-
-
-        //public static void LoadLevel(AssetReferenceT<LevelDataSO> newLevel)
-        //{
-        //    if (!newLevel.IsValid())
-        //    {
-        //        Debug.LogError("<color=red>[ADDRESSABLE]: The level you are trying to load is not valid.</color>");
-        //        return;
-        //    }
-        //    newLevel.LoadAssetAsync().Completed += OnLevelDataLoaded;
-        //}
-
-        //private static void OnLevelDataLoaded(AsyncOperationHandle<LevelDataSO> handle)
-        //{
-        //    if (handle.Status == AsyncOperationStatus.Succeeded)
-        //    {
-        //        if (CurrentLevelLoaded) CloseLevel(CurrentLevelLoaded);
-        //        OpenLevel(handle.Result);
-        //        CurrentLevelLoaded = handle.Result;
-        //    }
-        //    else Debug.LogError($"<color=red>[ADDRESSABLE]: Addressable scene <color=cyan>{handle.Result}</color> can not load.</color>");
-        //}
     }
 }

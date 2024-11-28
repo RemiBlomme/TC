@@ -37,7 +37,7 @@ MonoBehaviour:
       m_SubObjectGUID: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
-  - InputPriority: 0
+  - InputPriority: 3
     SceneAssetReference:
       m_AssetGUID: 933ceb6a3997aac4eab8f6f02f0c0f92
       m_SubObjectName: 
