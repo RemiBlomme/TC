@@ -1,0 +1,35 @@
+Lieu : [Ville, Pays]
+Type de contrat : CDI
+Date de début : Dès que possible
+
+À propos de nous
+Capcom est un studio de développement de jeux vidéo innovant, dédié à créer des expériences immersives et captivantes pour les joueurs du monde entier. Nous recherchons un développeur talentueux et passionné, spécialisé dans la physique du moteur de jeux, pour rejoindre notre équipe dynamique.
+
+Description du poste
+En tant que Développeur spécialiste en Physique, vous serez responsable de la conception, de l'implémentation et de l'optimisation des systèmes de physique au sein de nos jeux. Vous travaillerez en étroite collaboration avec d'autres équipe pour garantir une expérience de jeu fluide et réaliste.
+
+Responsabilités
+Concevoir et implémenter des systèmes de physique pour le moteur de jeu.
+Optimiser les performances des simulations physiques.
+Collaborer avec les autres équipes pour intégrer la physique dans le gameplay.
+Analyser et résoudre les problèmes techniques liés à la physique dans les jeux.
+Profil recherché
+Diplôme en informatique, en génie logiciel ou dans un domaine connexe.
+Expérience significative en développement de moteurs de jeux, avec une spécialisation en physique.
+Maîtrise des langages de programmation tels que C++ et/ou C#.
+Bonne connaissance des principes de la physique et des mathématiques appliquées.
+Capacité à travailler en équipe et à communiquer efficacement.
+Passion pour les jeux vidéo et compréhension des mécaniques de gameplay.
+Pourquoi nous rejoindre ?
+Rejoignez une équipe créative et passionnée, dédiée à l'innovation dans le domaine du jeu vidéo.
+Opportunités de développement professionnel et d'apprentissage continu.
+Environnement de travail flexible et stimulant.
+Participer à la création de jeux qui inspirent et divertissent des milliers de joueurs.
+
+Comment postuler
+Si vous êtes prêt à relever ce défi et à faire partie d'une aventure passionnante, envoyez votre CV, une lettre de motivation et des exemples de vos travaux précédents à email@capcom.test
+Veuillez préciser "Candidature Développeur Spécialisé Physique" dans l'objet de votre email.
+
+Date limite de candidature : Trop tard
+
+Nous avons hâte de découvrir votre talent et de vous accueillir dans notre équipe !
