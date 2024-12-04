@@ -54,7 +54,7 @@ namespace Level.Editor
             var addressableDefinitionSO = CreateSO($"{_levelName} AddressableDefinition", mainFolderPath, nameof(AddressableDefinitionSO));
             AssetDatabase.SetLabels(addressableDefinitionSO, new[] { "AddressableIgnore" });
 
-            CreateSO(_levelName, mainFolderPath, nameof(LevelDataSO));
+            CreateSO($"{_levelName} Data", mainFolderPath, nameof(LevelDataSO));
 
             SymlinkManager.MoveToSymlinksFile(mainFolderPath, true);
 

@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 95029a6cc73856145ab599e80852a0e1, type: 3}
-  m_Name: Level 2
+  m_Name: Level 2 Data
   m_EditorClassIdentifier: 
   _lightingSceneAssetReference:
     m_AssetGUID: 75a8557e6e7b45a4a9502cb1a7d23ef8
