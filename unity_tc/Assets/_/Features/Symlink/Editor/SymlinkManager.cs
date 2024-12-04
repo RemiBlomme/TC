@@ -4,19 +4,20 @@ using UnityEditor;
 
 using Debug = UnityEngine.Debug;
 
+
 namespace Symlink.Editor
 {
     public class SymlinkManager
     {
         private const string SYMLINK_FOLDER_NAME = "symlinks";
 
+
         public static void CreateSymlink(string sourcePath, string targetPath)
         {
             if (Directory.Exists(targetPath)) return;
-            Debug.unityLogger.logEnabled = false;   // Doesn't work as intended
+            Debug.unityLogger.logEnabled = false;
 
-
-            string command = $"/c mklink /J \"{targetPath}\" \"{sourcePath}\"";     // Will be obsolete in c# 10
+            string command = $"/c mklink /J \"{targetPath}\" \"{sourcePath}\"";
 
             ProcessStartInfo startInfo = new("cmd.exe", command) { CreateNoWindow = true };
 
@@ -78,7 +79,7 @@ namespace Symlink.Editor
                 return;
             }
 
-            Debug.LogError($"<color=red>[SYMLINK]: The asset path given <color=cyan>{assetPath}</color> does not exist.</color>");
+            Debug.LogError($"<color=red>[SYMLINK]:</color> The asset path given <color=cyan>{assetPath}</color> does not exist.");
         }
     }
 }

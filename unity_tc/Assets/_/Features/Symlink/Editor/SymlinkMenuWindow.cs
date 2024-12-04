@@ -8,6 +8,7 @@ using UnityEngine.UIElements;
 
 using static Misc.Editor.CustomUI;
 
+
 namespace Symlink.Editor
 {
     public class SymlinkMenuWindow : EditorWindow
@@ -26,7 +27,7 @@ namespace Symlink.Editor
         {
             string dirPath = Directory.GetCurrentDirectory();
             DirectoryInfo parentDir = Directory.GetParent(dirPath);
-            DirectoryInfo symlinkDir = new($"{parentDir.FullName}\\symlinks");
+            DirectoryInfo symlinkDir = new DirectoryInfo($"{parentDir.FullName}\\symlinks");
 
             if (symlinkDir == null)
             {
@@ -34,13 +35,13 @@ namespace Symlink.Editor
                 return;
             }
 
-            //rootVisualElement.Add(VisualTreeMaker.Get(CreateToggle()));   // Started to create a VisualTreeElement to replace the current visual.
+            //rootVisualElement.Add(VisualTreeMaker.Get(CreateToggle()));   // WIP trying to change the visual into a VisualTree instead
+
+            rootVisualElement.Add(CreateButton("Update", OnUpdateClicked));
 
             ScrollView scrollView = new();
             DisplaySubDirectories(symlinkDir, scrollView);
             rootVisualElement.Add(scrollView);
-
-            rootVisualElement.Add(CreateButton("Update", OnUpdateClicked));
         }
 
         private void OnUpdateClicked()
@@ -53,7 +54,6 @@ namespace Symlink.Editor
                 else SymlinkManager.RemoveSymlink(assetPath);
             }
 
-            Close();
             AddressableManager.Scan();
         }
 

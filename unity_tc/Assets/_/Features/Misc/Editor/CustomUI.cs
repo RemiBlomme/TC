@@ -172,6 +172,65 @@ namespace Misc.Editor
         }
     }
 
+    #region VisualTreeMaker WIP
+
+    public class VisualTreeMaker
+    {
+        private static TreeView _treeView;
+        private static VisualElement _toAdd;
+        private static int _index;
+
+        public static TreeView Get(VisualElement element)
+        {
+            _treeView = new TreeView();
+            _toAdd = element;
+
+            List<TreeViewItemData<string>> child1Items = new()
+            {
+                new TreeViewItemData<string>(6 , "0"),
+                new TreeViewItemData<string>(7 , "1"),
+            };
+
+            List<TreeViewItemData<string>> childItems = new()
+            {
+                new TreeViewItemData<string>(3 , "0", child1Items),
+                new TreeViewItemData<string>(4 , "1"),
+                new TreeViewItemData<string>(5 , "2"),
+            };
+
+            List<TreeViewItemData<string>> rootItems = new()
+            {
+                new TreeViewItemData<string>(0 , "0", childItems),
+                new TreeViewItemData<string>(1 , "1"),
+                new TreeViewItemData<string>(2 , "2"),
+            };
+
+
+            _treeView.SetRootItems(rootItems);
+            _treeView.makeItem = MakeItem;
+            _treeView.bindItem = BindItem;
+            _treeView.Rebuild();
+
+            return _treeView;
+        }
+
+        private TreeViewItemData<string> GetNewItem(string text)
+        {
+            return new TreeViewItemData<string>(_index++, text);
+        }
+
+        private static VisualElement MakeItem() => CustomUI.CreateToggle();
+
+        private static void BindItem(VisualElement element, int index)
+        {
+            var item = _treeView.GetItemDataForIndex<string>(index);
+            (element as Toggle).text = item;
+        }
+    }
+
+    #endregion
+
+
     public static class UIElementsExtensions
     {
         public static VisualElement AddDefaultInspector(this VisualElement visualElement, UnityEditor.Editor editor)

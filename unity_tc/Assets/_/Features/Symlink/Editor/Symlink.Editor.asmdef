@@ -2,10 +2,9 @@
     "name": "Symlink.Editor",
     "rootNamespace": "Symlink.Editor",
     "references": [
-        "GUID:752f96e1d1cebe94a8d460efda5f6f1a",
         "GUID:0caf828d621b84d40a1cd9c2349c1435",
         "GUID:7ba8fe7feadb8a24aa9c6c83f434eb4d",
-        "GUID:c5b647f94eeb157419be9a0cfbc275cd"
+        "GUID:752f96e1d1cebe94a8d460efda5f6f1a"
     ],
     "includePlatforms": [
         "Editor"

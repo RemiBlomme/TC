@@ -21,24 +21,16 @@ namespace AddressableDefinition.Editor
             {
                 string definitionPath = AssetDatabase.GUIDToAssetPath(guids[i]);
                 string parentFolderPath = Path.GetDirectoryName(definitionPath);
-                //string parentFolderName = Path.GetFileName(parentFolderPath);
-                string[] childGuids = AssetDatabase.FindAssets("", new[] { parentFolderPath });
+                string parentFolderName = Path.GetFileName(parentFolderPath);
 
-                string groupName = AssetDatabase.LoadAssetAtPath<AddressableDefinitionSO>(definitionPath).name;
+                string groupName = parentFolderName;
 
-                //bool alreadyExist = TryGetAddressableAssetGroup(parentFolderName, out AddressableAssetGroup group);
-                //var newGroup = group ?? NewAddressableAssetGroup(parentFolderName);
+                bool alreadyExist = TryGetAddressableAssetGroup(parentFolderName, out AddressableAssetGroup group);
+                var newGroup = group ?? NewAddressableAssetGroup(parentFolderName);
 
-                var newGroup = AddressableAssetSettingsDefaultObject.Settings.FindGroup(groupName) ?? null;
-                AddressableAssetSettingsDefaultObject.Settings.CreateGroup(groupName, false, false, true, null);
                 ProcessFolderRecurcively(parentFolderPath, newGroup);
-
-                //for (int j = 0; j < childGuids.Length; j++)
-                //{
-                //    if (AssetDatabase.GetLabels(new GUID(childGuids[j])).Contains(Labels.ADDRESSABLE_IGNORE)) continue;
-                //    SetAsAddressable($"{childGuids[j]}", newGroup, true);
-                //}
             }
+
             Clear();
         }
 

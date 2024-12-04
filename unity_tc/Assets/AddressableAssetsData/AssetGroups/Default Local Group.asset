@@ -20,41 +20,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 2e243ac5cdf481241a735d42c77e32fd
-    m_Address: Assets/_/Levels/Level 1/Scenes/Level test - Lighting.unity
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 34e6fd0052a63c9419b5a8fe2956c24d
-    m_Address: Assets/_/Levels/Level 2/Scenes/Level 2 - UI.unity
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 5f5fec22cdaadd84aa1b619725875b00
-    m_Address: Assets/_/Levels/Level 2/Scenes/Level 2 - Gameplay.unity
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 75a8557e6e7b45a4a9502cb1a7d23ef8
-    m_Address: Assets/_/Levels/Level 2/Scenes/Level 2 - Lighting.unity
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 87d1ddb41757f0c4795f544e2b90feee
-    m_Address: Assets/_/Levels/Level 1/Scenes/Level test - Gameplay.unity
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 933ceb6a3997aac4eab8f6f02f0c0f92
-    m_Address: Assets/_/Levels/Level 1/Scenes/Level test - UI.unity
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: d122876b6ea33824089cc08db73125a0
-    m_Address: Assets/_/Levels/Level 2/Level 2.asset
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 59af9f65878c1ef4b8ffc1c9809436f5, type: 2}
   m_SchemaSet:
