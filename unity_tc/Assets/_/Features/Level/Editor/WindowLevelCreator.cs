@@ -6,6 +6,7 @@ using Misc.Data;
 using Misc.Editor;
 using Level.Data;
 using Symlink.Editor;
+using AddressableDefinition.Editor;
 
 namespace Level.Editor
 {

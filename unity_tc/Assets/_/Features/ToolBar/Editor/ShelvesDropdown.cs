@@ -4,6 +4,7 @@ using UnityEngine.UIElements;
 using Paps.UnityToolbarExtenderUIToolkit;
 using Misc.Editor;
 using Level.Editor;
+using AddressableDefinition.Editor;
 
 namespace ToolBar.Editor
 {

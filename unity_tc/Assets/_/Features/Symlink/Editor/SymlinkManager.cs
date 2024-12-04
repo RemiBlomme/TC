@@ -10,13 +10,13 @@ namespace Symlink.Editor
     {
         private const string SYMLINK_FOLDER_NAME = "symlinks";
 
-
         public static void CreateSymlink(string sourcePath, string targetPath)
         {
             if (Directory.Exists(targetPath)) return;
-            Debug.unityLogger.logEnabled = false;
+            Debug.unityLogger.logEnabled = false;   // Doesn't work as intended
 
-            string command = $"/c mklink /J \"{targetPath}\" \"{sourcePath}\"";
+
+            string command = $"/c mklink /J \"{targetPath}\" \"{sourcePath}\"";     // Will be obsolete in c# 10
 
             ProcessStartInfo startInfo = new("cmd.exe", command) { CreateNoWindow = true };
 
@@ -75,11 +75,10 @@ namespace Symlink.Editor
                 if (createSymlink) CreateSymlink(symlinkPath, assetFullPath);
 
                 AssetDatabase.Refresh();
+                return;
             }
-            else
-            {
-                Debug.LogError($"<color=red>[SYMLINK]:</color> The asset path given <color=cyan>{assetPath}</color> does not exist.");
-            }
+
+            Debug.LogError($"<color=red>[SYMLINK]: The asset path given <color=cyan>{assetPath}</color> does not exist.</color>");
         }
     }
 }

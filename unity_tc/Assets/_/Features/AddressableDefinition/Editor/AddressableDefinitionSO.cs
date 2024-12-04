@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Misc.Editor
+namespace AddressableDefinition.Editor
 {
     [CreateAssetMenu(menuName = "SO/AddressableDefinition")]
     public class AddressableDefinitionSO : ScriptableObject { }

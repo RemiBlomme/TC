@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using Misc.Data;
 
-namespace Misc.Editor
+namespace AddressableDefinition.Editor
 {
     public class AddressableManager
     {
