@@ -1,0 +1,11 @@
+{
+    "name": "AddressableDefinition.Data",
+    "rootNamespace": "AddressableDefinition.Data",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

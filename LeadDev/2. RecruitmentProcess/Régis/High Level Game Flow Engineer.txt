@@ -1,0 +1,16 @@
+Recherche High Level Game Flow Engineer - Starfield
+
+Votre rôle: Intégrer tous les éléments de jeu créés par nos équipes et les faire interagir entre eux de manière fluide.
+
+Questions techniques :
+
+01. Quelles sont vos inspirations de jeux vidéos?
+02. Quelles sont vos compétences de communication?
+03. Connaissez vous les design patterns?
+04. Savez vous écrire et consulter de la documentation?
+05. Quels sont vos langages de programmation favoris?
+06. Quels sont les différents types de joueurs à prendre en compte?
+07. Vaut-il mieux programmer pour arriver à des résultats rapidement ou bien planifier tout ce qui doit être pris en compte?
+08. Qu'est-ce que le game flow?
+09. Quelles sont les erreurs à ne pas commettre dans le game flow?
+10. Pourriez vous nous donner quelques exemples de game flow positifs?

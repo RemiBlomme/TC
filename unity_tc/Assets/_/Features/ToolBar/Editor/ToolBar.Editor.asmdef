@@ -3,6 +3,7 @@
     "rootNamespace": "ToolBar.Editor",
     "references": [
         "GUID:8d62da4aabd2a19419c7378d23ea5849",
+        "GUID:752f96e1d1cebe94a8d460efda5f6f1a",
         "GUID:0caf828d621b84d40a1cd9c2349c1435",
         "GUID:7ba8fe7feadb8a24aa9c6c83f434eb4d",
         "GUID:157c3030a43eef1439c6ec2a607a2b80",

@@ -6,6 +6,8 @@ using UnityEditor.AddressableAssets.Settings;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using Misc.Data;
+using UnityEditor.AddressableAssets.GUI;
+using AddressableDefinition.Data;
 
 namespace AddressableDefinition.Editor
 {
@@ -17,33 +19,74 @@ namespace AddressableDefinition.Editor
 
             for (int i = 0; i < guids.Length; i++)
             {
-                string parentFolderPath = Path.GetDirectoryName(AssetDatabase.GUIDToAssetPath(guids[i]));
-                string parentFolderName = Path.GetFileName(parentFolderPath);
+                string definitionPath = AssetDatabase.GUIDToAssetPath(guids[i]);
+                string parentFolderPath = Path.GetDirectoryName(definitionPath);
+                //string parentFolderName = Path.GetFileName(parentFolderPath);
                 string[] childGuids = AssetDatabase.FindAssets("", new[] { parentFolderPath });
 
-                bool alreadyExist = TryGetAddressableAssetGroup(parentFolderName, out AddressableAssetGroup group);
-                var newGroup = group ?? NewAddressableAssetGroup(parentFolderName);
+                string groupName = AssetDatabase.LoadAssetAtPath<AddressableDefinitionSO>(definitionPath).name;
 
-                for (int j = 0; j < childGuids.Length; j++)
-                {
-                    if (AssetDatabase.GetLabels(new GUID(childGuids[j])).Contains(Labels.ADDRESSABLE_IGNORE)) continue;
-                    SetAsAddressable($"{childGuids[j]}", newGroup, true);
-                }
+                //bool alreadyExist = TryGetAddressableAssetGroup(parentFolderName, out AddressableAssetGroup group);
+                //var newGroup = group ?? NewAddressableAssetGroup(parentFolderName);
+
+                var newGroup = AddressableAssetSettingsDefaultObject.Settings.FindGroup(groupName) ?? null;
+                AddressableAssetSettingsDefaultObject.Settings.CreateGroup(groupName, false, false, true, null);
+                ProcessFolderRecurcively(parentFolderPath, newGroup);
+
+                //for (int j = 0; j < childGuids.Length; j++)
+                //{
+                //    if (AssetDatabase.GetLabels(new GUID(childGuids[j])).Contains(Labels.ADDRESSABLE_IGNORE)) continue;
+                //    SetAsAddressable($"{childGuids[j]}", newGroup, true);
+                //}
             }
             Clear();
         }
+
+        private static void ProcessFolderRecurcively(string folderPath, AddressableAssetGroup group)
+        {
+            AddFilesToGroup(Directory.GetFiles(folderPath), group);
+            string[] subFolders = Directory.GetDirectories(folderPath);
+
+            for (int i = 0; i < subFolders.Length; i++)
+            {
+                var subFolder = subFolders[i];
+                string[] subFolderFiles = Directory.GetFiles(subFolder);
+                bool hasAddressableDefinition = subFolderFiles.Any(subFile => AssetDatabase.LoadAssetAtPath<AddressableDefinitionSO>(subFile));
+                if (hasAddressableDefinition) continue;
+
+                AddFilesToGroup(subFolderFiles, group);
+                ProcessFolderRecurcively(subFolder, group);
+            }
+        }
+
+        private static void AddFilesToGroup(string[] filesPaths, AddressableAssetGroup group)
+        {
+            string[] files = filesPaths.Where(file => !file.EndsWith(".meta")).ToArray();
+
+            for (int i = 0; i < files.Length; i++)
+            {
+                GUID guid = AssetDatabase.GUIDFromAssetPath(files[i]);
+                if (AssetDatabase.GetLabels(guid).Contains(Labels.ADDRESSABLE_IGNORE)) continue;
+
+                AddressableAssetSettingsDefaultObject.Settings.CreateOrMoveEntry($"{guid}", group);
+            }
+        }
+
+        public static void OpenGroupWindow() => AddressableExposed.GetGroupWindow();
 
         public static void Build() => AddressableAssetSettings.BuildPlayerContent();
 
         public static void Clear()
         {
             var settings = AddressableAssetSettingsDefaultObject.Settings;
+            AddressableAssetGroup group;
 
             for (int i = settings.groups.Count - 1; i > -1; i--)
             {
-                if (settings.groups[i].entries.Count == 0 && settings.groups[i] != settings.DefaultGroup)
+                group = settings.groups[i];
+                if (group.entries.Count == 0 && !group.IsDefaultGroup())
                 {
-                    settings.RemoveGroup(settings.groups[i]);
+                    settings.RemoveGroup(group);
                 }
             }
         }

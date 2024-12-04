@@ -2,9 +2,10 @@
     "name": "AddressableDefinition.Editor",
     "rootNamespace": "AddressableDefinition.Editor",
     "references": [
-        "GUID:0caf828d621b84d40a1cd9c2349c1435",
         "GUID:9e24947de15b9834991c9d8411ea37cf",
-        "GUID:69448af7b92c7f342b298e06a37122aa"
+        "GUID:69448af7b92c7f342b298e06a37122aa",
+        "GUID:8eeefcece6923b8409e6c283c3461413",
+        "GUID:0caf828d621b84d40a1cd9c2349c1435"
     ],
     "includePlatforms": [
         "Editor"

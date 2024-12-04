@@ -1,0 +1,12 @@
+Qu'est ce qu'un moteur physique et comment il fonctionne?
+Citer quelques exemple de moteur physique utiliser pour la création de jeux?
+Quelle expérience avez-vous sur les moteurs physique?
+Avez-vous de l'expérience sur de multiple plateforme (Playstation, Xbox, PC,...)?
+Différence entre un objet "Kinématique" et "Dynamique".
+Qu'est ce que le "Time step" en simulation physique?
+Une problématique rencontrée et comment elle a été résolue.
+Quel outil avez-vous utilisez pour débugger la physique?
+Un exemple commun d'optimisation physique pour réduire la charge de calcul.
+Avez-vous implémentez des algos spécifiques pour la physique? Si oui lesquels et pourquoi?
+
+

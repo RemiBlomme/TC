@@ -159,13 +159,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 532568636}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dddb74a42d1e1084196bf066fcf3492f, type: 3}
+  m_Script: {fileID: 11500000, guid: f7cdeb228554970459e5595c4891e4bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _levelLoader:
-    serializedGuid: 9214538768fc9e41809f9a8a0340b54b
-    cachedName: LevelLoader
-    cachedScene: {fileID: 102900000, guid: ae09ae7695ba67b4ea612d16127e2714, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

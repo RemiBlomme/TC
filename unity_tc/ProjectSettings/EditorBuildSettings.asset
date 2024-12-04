@@ -5,10 +5,12 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/_/Levels/Persistant-Engine/PersistantEngine.unity
     guid: ae09ae7695ba67b4ea612d16127e2714
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: a56b68cbac3f8664f961bdc0c6b89629,
       type: 2}
+    com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 0e4256952eee7324b920ff5c4606bf34,
+      type: 3}
   m_UseUCBPForAssetBundles: 0

@@ -13,9 +13,34 @@ MonoBehaviour:
   m_Name: Level 1
   m_EditorClassIdentifier: 
   _lightingSceneAssetReference:
-    m_AssetGUID: 
+    m_AssetGUID: 2e243ac5cdf481241a735d42c77e32fd
     m_SubObjectName: 
     m_SubObjectGUID: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
-  _sceneAssetReferences: []
+  _sceneAssetReferences:
+  - m_AssetGUID: 87d1ddb41757f0c4795f544e2b90feee
+    m_SubObjectName: 
+    m_SubObjectGUID: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  - m_AssetGUID: 933ceb6a3997aac4eab8f6f02f0c0f92
+    m_SubObjectName: 
+    m_SubObjectGUID: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  _sceneData:
+  - InputPriority: 10
+    SceneAssetReference:
+      m_AssetGUID: 87d1ddb41757f0c4795f544e2b90feee
+      m_SubObjectName: 
+      m_SubObjectGUID: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0
+  - InputPriority: 3
+    SceneAssetReference:
+      m_AssetGUID: 933ceb6a3997aac4eab8f6f02f0c0f92
+      m_SubObjectName: 
+      m_SubObjectGUID: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0

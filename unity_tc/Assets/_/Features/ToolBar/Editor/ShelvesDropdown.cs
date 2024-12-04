@@ -25,7 +25,7 @@ namespace ToolBar.Editor
     }
 
 
-    [MainToolbarElement(id: "ShortcutDropDownToolBar", ToolbarAlign.Right, order: 0)]
+    [MainToolbarElement(id: nameof(ShelvesDropdown), ToolbarAlign.Right, order: 0)]
     public class ShelvesDropdown : DropdownField
     {
         [Serialize] private string _currentValue;
@@ -72,7 +72,7 @@ namespace ToolBar.Editor
     }
 
 
-    [MainToolbarElement(id: "CreateFeatureButtonToolBar", ToolbarAlign.Right, order: 1)]
+    [MainToolbarElement(id: nameof(CreateFeatureShelf), ToolbarAlign.Right, order: 1)]
     public class CreateFeatureShelf : Shelf
     {
         public override void Initialize()
@@ -80,12 +80,12 @@ namespace ToolBar.Editor
             _shortcut = Shelves.FEATURE;
 
             text = "Create";
-            clicked += () => WindowFeatureCreator.ShowWindow();
+            clicked += WindowFeatureCreator.ShowWindow;
         }
     }
 
 
-    [MainToolbarElement(id: "CreateLevelButtonToolBar", ToolbarAlign.Right, order: 1)]
+    [MainToolbarElement(id: nameof(CreateLevelShelf), ToolbarAlign.Right, order: 0)]
     public class CreateLevelShelf : Shelf
     {
         public override void Initialize()
@@ -93,12 +93,24 @@ namespace ToolBar.Editor
             _shortcut = Shelves.LEVEL;
 
             text = "Create";
-            clicked += () => WindowLevelCreator.ShowWindow();
+            clicked += WindowLevelCreator.ShowWindow;
         }
     }
 
 
-    [MainToolbarElement(id: "ScanAddressableShelf", ToolbarAlign.Right, order: 1)]
+    [MainToolbarElement(id: nameof(ShowAddressabeGroupShelf), ToolbarAlign.Right, order: 1)]
+    public class ShowAddressabeGroupShelf : Shelf
+    {
+        public override void Initialize()
+        {
+            _shortcut = Shelves.ADDRESSABLE;
+
+            text = "Groups";
+            clicked += AddressableManager.OpenGroupWindow;
+        }
+    }
+
+    [MainToolbarElement(id: nameof(ScanAddressableShelf), ToolbarAlign.Right, order: 2)]
     public class ScanAddressableShelf : Shelf
     {
         public override void Initialize()
@@ -106,11 +118,11 @@ namespace ToolBar.Editor
             _shortcut = Shelves.ADDRESSABLE;
 
             text = "Scan";
-            clicked += () => AddressableManager.Scan();
+            clicked += AddressableManager.Scan;
         }
     }
 
-    [MainToolbarElement(id: "BuildAddressableButtonToolBar", ToolbarAlign.Right, order: 2)]
+    [MainToolbarElement(id: nameof(BuildAddressableShelf), ToolbarAlign.Right, order: 3)]
     public class BuildAddressableShelf : Shelf
     {
         public override void Initialize()
@@ -118,19 +130,19 @@ namespace ToolBar.Editor
             _shortcut = Shelves.ADDRESSABLE;
 
             text = "Build";
-            clicked += () => AddressableManager.Build();
+            clicked += AddressableManager.Build;
         }
     }
 
-    //[MainToolbarElement(id: "ClearAddressableShelf", ToolbarAlign.Right, order: 3)]
-    //public class ClearAddressableShelf : Shelf
-    //{
-        //public override void Initialize()
-        //{
-            //_shortcut = Shelves.ADDRESSABLE;
+    [MainToolbarElement(id: nameof(ClearAddressableShelf), ToolbarAlign.Right, order: 4)]
+    public class ClearAddressableShelf : Shelf
+    {
+        public override void Initialize()
+        {
+            _shortcut = Shelves.ADDRESSABLE;
 
-            //text = "Clear";
-            //clicked += () => AddressableManager.Clear();
-        //}
-    //}
+            text = "Clear";
+            clicked += AddressableManager.Clear;
+        }
+    }
 }

@@ -1,0 +1,18 @@
+Soft de communication
+  Teams : Permet la communication collaborative entre différentes équipes, visioconférence, messageries instantanée, partage de fichiers etc
+  Discord : Trop ouvert vers l'extérieur, mauvaise sécurité car basé sur le javascript.
+  Wiki interne : Documentation online, self hosté
+  Slack: Gestion de projet / tâches / communication
+Soft de versioning
+ Code :
+  Git : Adapté pour le versioning de code, tous les devs le connaissent.
+ Assets binaires:
+  Perforce : Meilleur management des assets par rapport à git, période d'adaptation pour certains devs.
+ Builds automatiques:
+  Unity Build Automation. S'intègre avec Slack Discord ou Jira pour les notifications de nouvelles builds.
+
+Soft de gestion de projet
+  Jira : Gestion de scrum board ou Kanban board.
+  OpenProject : Alternative self-hostée et open source
+  Trello : Gestion de projet/tâches
+  Focalboard : Alternative à Trello self-hostée
